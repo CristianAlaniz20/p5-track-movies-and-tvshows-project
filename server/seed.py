@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Movie, TVShow
+from models import db, Movie, TVShow, User, MovieWatchEvent, TVShowWatchEvent
 
 if __name__ == '__main__':
     fake = Faker()
@@ -20,6 +20,9 @@ if __name__ == '__main__':
         print("deleting previous records...")
         Movie.query.delete()
         TVShow.query.delete()
+        User.query.delete()
+        MovieWatchEvent.query.delete()
+        TVShowWatchEvent.query.delete()
 
         # Hard coded lists for seeding
         genres = ["Action", "Romance", "Comedy", "Horror", "True Crime", "Science Fiction"]
