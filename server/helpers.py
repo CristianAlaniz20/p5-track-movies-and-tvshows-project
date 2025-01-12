@@ -10,3 +10,7 @@ def empty_username_or_password_response():
 
 def error_response(error):
     return make_response(jsonify({"error": str(error)}), 404)
+
+def no_user_found_response():
+    return make_response(jsonify({"error" : "User not found."}), 404)
+
