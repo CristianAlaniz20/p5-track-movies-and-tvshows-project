@@ -3,8 +3,9 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request
+from flask import request, session, jsonify, make_response
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api
