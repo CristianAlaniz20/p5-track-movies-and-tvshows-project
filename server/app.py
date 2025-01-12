@@ -86,10 +86,27 @@ class Login(Resource):
         except Exception as e:
             return error_response(e)
         
+class CheckSession(Resource):
+    def get(self):
+        if session['user_id']:
+            user = User.query.filter_by(id=session['user_id']).first()
+            if user:
+                response = {
+                    "message" : "Session user found",
+                    "user" : user.to_dict()
+                }
+                return make_response(jsonify(response), 200)
+            else:
+                session['user_id'] = None
+                return no_user_found_response()
+        else:
+            return make_response(jsonify({"error" : "No user id found in session."}), 401)
+
 
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
+api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 
 
 if __name__ == '__main__':
