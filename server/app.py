@@ -102,11 +102,20 @@ class CheckSession(Resource):
         else:
             return make_response(jsonify({"error" : "No user id found in session."}), 401)
 
+class Logout(Resource):
+    def delete(self):
+        if session['user_id']:
+            session['user_id'] = None
+
+            return make_response(jsonify({"message" : "logged out"}), 200)
+        else:
+            return make_response(jsonify({"error" : "Already logged out"}), 404)
 
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
+api.add_resource(Logout, '/logout', endpoint='logout')
 
 
 if __name__ == '__main__':
