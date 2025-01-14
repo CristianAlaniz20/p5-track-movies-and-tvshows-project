@@ -14,3 +14,8 @@ def error_response(error):
 def no_user_found_response():
     return make_response(jsonify({"error" : "User not found."}), 404)
 
+def no_session_id_response():
+    return make_response(jsonify({"error" : "No user id found in session."}), 401)
+
+def invalid_status_value_response():
+    return make_response(jsonify({"error" : "Invalid status value."}), 404)
