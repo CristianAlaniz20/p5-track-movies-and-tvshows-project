@@ -19,3 +19,9 @@ def no_session_id_response():
 
 def invalid_status_value_response():
     return make_response(jsonify({"error" : "Invalid status value."}), 404)
+
+def no_url_id_response(id):
+    return make_response(jsonify({"error" : f"No {id} id was received."}), 404)
+
+def no_watch_event_found_response(event_type):
+    return make_response(jsonify({"error" : f"No {event_type} was found."}), 404)
