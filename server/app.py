@@ -289,6 +289,49 @@ class TVShowEvent(Resource):
         except Exception as e:
             return error_response(e)
 
+    def put(self, tv_show_id):
+        try:
+            data = request.get_json()
+            rating = data['rating']
+            notes = data['notes']
+            status = data['status']
+            existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
+
+            if not tv_show_id:
+                return make_response(jsonify({"error" : "No tv show id was received."}), 404)
+            elif not session['user_id']:
+                return no_session_id_response()
+            elif not existing_tv_show_watch_event:
+                return make_response(jsonify({"error" : "No tv show watch event found. Add tv show to a watch list."}), 404)
+            elif not data:
+                return no_data_response()
+            elif status not in ('to-watch', 'watched'):
+                return invalid_status_value_response()
+            else:
+                # Change watch event values to new values
+                existing_tv_show_watch_event.rating = rating
+                existing_tv_show_watch_event.notes = notes
+                existing_tv_show_watch_event.status = status
+
+                # Commit changes to db
+                db.session.commit()
+
+                # Create response
+                response = {
+                    "message" : "Sucessfully updated tv show watch event.",
+                    "watch_event" : existing_tv_show_watch_event.to_dict(rules=('-user', '-tv_show',))
+                }
+
+                return make_response(jsonify(response), 200)
+
+        # User model constraints not met
+        except IntegrityError as e:
+            return error_response(e)
+
+        # All other exceptions
+        except Exception as e:
+            return error_response(e)
+
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
