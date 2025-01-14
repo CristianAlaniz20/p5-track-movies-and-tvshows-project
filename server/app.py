@@ -196,7 +196,50 @@ class MovieEvent(Resource):
         # All other exceptions
         except Exception as e:
             return error_response(e)
-        
+
+    def put(self, movie_id):
+        try:
+            data = request.get_json()
+            rating = data['rating']
+            notes = data['notes']
+            status = data['status']
+            existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
+
+            if not movie_id:
+                return make_response(jsonify({"error" : "No movie id was received."}), 404)
+            elif not session['user_id']:
+                return no_session_id_response()
+            elif not existing_movie_watch_event:
+                return make_response(jsonify({"error" : "No movie watch event found. Add movie to a watch list."}), 404)
+            elif not data:
+                return no_data_response()
+            elif status not in ('to-watch', 'watched'):
+                return invalid_status_value_response()
+            else:
+                # Change watch event values to new values
+                existing_movie_watch_event.rating = rating
+                existing_movie_watch_event.notes = notes
+                existing_movie_watch_event.status = status
+
+                # Commit changes to db
+                db.session.commit()
+
+                # Create response
+                response = {
+                    "message" : "Sucessfully updated movie watch event.",
+                    "watch_event" : existing_movie_watch_event.to_dict(rules=('-user', '-movie',))
+                }
+
+                return make_response(jsonify(response), 200)
+
+        # User model constraints not met
+        except IntegrityError as e:
+            return error_response(e)
+
+        # All other exceptions
+        except Exception as e:
+            return error_response(e)
+
 class TVShowEvent(Resource):
     def post(self, tv_show_id):
         try:
