@@ -197,6 +197,54 @@ class MovieEvent(Resource):
         except Exception as e:
             return error_response(e)
         
+class TVShowEvent(Resource):
+    def post(self, tv_show_id):
+        try:
+            data = request.get_json()
+            rating = data['rating']
+            notes = data['notes']
+            status = data['status']
+            existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
+
+            if existing_tv_show_watch_event:
+                return make_response(jsonify({"error" : "A tv show watch event already exists."}), 404)
+            elif not tv_show_id:
+                return make_response(jsonify({"error" : "No tv show id was received."}), 404)
+            elif not session['user_id']:
+                return make_response(jsonify({"error" : "No user id found in session."}), 401)
+            elif not data:
+                return no_data_response()
+            elif status not in ('to-watch', 'watched'):
+                return make_response(jsonify({"error" : "Invalid status value."}), 404)
+            else:
+                # Create a new MovieWatchEvent instance
+                new_tv_show_watch_event = TVShowWatchEvent(
+                    user_id = session['user_id'],
+                    tv_show_id=tv_show_id,
+                    rating=rating,
+                    notes=notes,
+                    status=status
+                )
+
+                # Add and Commit to db
+                db.session.add(new_tv_show_watch_event)
+                db.session.commit()
+
+                # Create response
+                response = {
+                    "message" : "TV Show watch event successfully created.",
+                    "watch_event" : new_tv_show_watch_event.to_dict(rules=('-user', '-tv_show',))
+                }
+                
+                return make_response(jsonify(response), 201)
+
+        # User model constraints not met
+        except IntegrityError as e:
+            return error_response(e)
+
+        # All other exceptions
+        except Exception as e:
+            return error_response(e)
 
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -205,6 +253,7 @@ api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(SearchResults, '/search_results', endpoint='search_results')
 api.add_resource(MovieEvent, '/movie_event/<int:movie_id>', endpoint='movie_event')
+api.add_resource(TVShowEvent, '/tv_show_event/<int:tv_show_id>', endpoint='tv_show_event')
 
 
 if __name__ == '__main__':
