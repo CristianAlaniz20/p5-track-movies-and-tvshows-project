@@ -354,6 +354,28 @@ class TVShowEvent(Resource):
         except Exception as e:
             return error_response(e)
 
+    def delete(self, tv_show_id):
+        try:
+            existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
+
+            if not tv_show_id:
+                return make_response(jsonify({"error" : "No tv show id was received."}), 404)
+            elif not session['user_id']:
+                return no_session_id_response()
+            elif not existing_tv_show_watch_event:
+                return make_response(jsonify({"error" : "No tv show watch event found. Add tv show to a watch list."}), 404)
+            else:
+                # Delete existing tv show watch event and Commit change to db
+                db.session.delete(existing_tv_show_watch_event)
+                db.session.commit()
+
+                # Create response
+                return make_response(jsonify({"message" : "tv show watch event deleted."}), 200)
+
+        # All other exceptions
+        except Exception as e:
+            return error_response(e)
+
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
