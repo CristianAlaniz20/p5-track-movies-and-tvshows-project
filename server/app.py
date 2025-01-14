@@ -12,7 +12,7 @@ from config import app, db, api
 # Add your model imports
 from models import User, Movie, TVShow, MovieWatchEvent, TVShowWatchEvent
 # Helper functions imports
-from helpers import no_data_response, empty_username_or_password_response, error_response, no_user_found_response
+from helpers import no_data_response, empty_username_or_password_response, error_response, no_user_found_response, no_session_id_response, invalid_status_value_response
 
 # Views go here!
 
@@ -100,7 +100,7 @@ class CheckSession(Resource):
                 session['user_id'] = None
                 return no_user_found_response()
         else:
-            return make_response(jsonify({"error" : "No user id found in session."}), 401)
+            return no_session_id_response()
 
 class Logout(Resource):
     def delete(self):
@@ -109,7 +109,7 @@ class Logout(Resource):
 
             return make_response(jsonify({"message" : "logged out"}), 200)
         else:
-            return make_response(jsonify({"error" : "Already logged out"}), 404)
+            return no_session_id_response()
 
 class SearchResults(Resource):
     def post(self):
@@ -162,11 +162,11 @@ class MovieEvent(Resource):
             elif not movie_id:
                 return make_response(jsonify({"error" : "No movie id was received."}), 404)
             elif not session['user_id']:
-                return make_response(jsonify({"error" : "No user id found in session."}), 401)
+                return no_session_id_response()
             elif not data:
                 return no_data_response()
             elif status not in ('to-watch', 'watched'):
-                return make_response(jsonify({"error" : "Invalid status value."}), 404)
+                return invalid_status_value_response()
             else:
                 # Create a new MovieWatchEvent instance
                 new_movie_watch_event = MovieWatchEvent(
@@ -211,13 +211,13 @@ class TVShowEvent(Resource):
             elif not tv_show_id:
                 return make_response(jsonify({"error" : "No tv show id was received."}), 404)
             elif not session['user_id']:
-                return make_response(jsonify({"error" : "No user id found in session."}), 401)
+                return no_session_id_response()
             elif not data:
                 return no_data_response()
             elif status not in ('to-watch', 'watched'):
-                return make_response(jsonify({"error" : "Invalid status value."}), 404)
+                return invalid_status_value_response()
             else:
-                # Create a new MovieWatchEvent instance
+                # Create a new TVShowWatchEvent instance
                 new_tv_show_watch_event = TVShowWatchEvent(
                     user_id = session['user_id'],
                     tv_show_id=tv_show_id,
