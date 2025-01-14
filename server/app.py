@@ -12,7 +12,7 @@ from config import app, db, api
 # Add your model imports
 from models import User, Movie, TVShow, MovieWatchEvent, TVShowWatchEvent
 # Helper functions imports
-from helpers import no_data_response, empty_username_or_password_response, error_response, no_user_found_response, no_session_id_response, invalid_status_value_response
+from helpers import no_data_response, empty_username_or_password_response, error_response, no_user_found_response, no_session_id_response, invalid_status_value_response, no_watch_event_found_response, no_url_id_response
 
 # Views go here!
 
@@ -160,7 +160,7 @@ class MovieEvent(Resource):
             if existing_movie_watch_event:
                 return make_response(jsonify({"error" : "A movie watch event already exists."}), 404)
             elif not movie_id:
-                return make_response(jsonify({"error" : "No movie id was received."}), 404)
+                return no_url_id_response("movie")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not data:
@@ -206,11 +206,11 @@ class MovieEvent(Resource):
             existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
 
             if not movie_id:
-                return make_response(jsonify({"error" : "No movie id was received."}), 404)
+                return no_url_id_response("movie")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not existing_movie_watch_event:
-                return make_response(jsonify({"error" : "No movie watch event found. Add movie to a watch list."}), 404)
+                return no_watch_event_found_response("movie")
             elif not data:
                 return no_data_response()
             elif status not in ('to-watch', 'watched'):
@@ -245,11 +245,11 @@ class MovieEvent(Resource):
             existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
 
             if not movie_id:
-                return make_response(jsonify({"error" : "No movie id was received."}), 404)
+                return no_url_id_response("movie")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not existing_movie_watch_event:
-                return make_response(jsonify({"error" : "No movie watch event found."}), 404)
+                return no_watch_event_found_response("movie")
             else:
                 # Delete existing movie watch event and Commit change to db
                 db.session.delete(existing_movie_watch_event)
@@ -274,7 +274,7 @@ class TVShowEvent(Resource):
             if existing_tv_show_watch_event:
                 return make_response(jsonify({"error" : "A tv show watch event already exists."}), 404)
             elif not tv_show_id:
-                return make_response(jsonify({"error" : "No tv show id was received."}), 404)
+                return no_url_id_response("tv show")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not data:
@@ -320,11 +320,11 @@ class TVShowEvent(Resource):
             existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
 
             if not tv_show_id:
-                return make_response(jsonify({"error" : "No tv show id was received."}), 404)
+                return no_url_id_response("tv show")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not existing_tv_show_watch_event:
-                return make_response(jsonify({"error" : "No tv show watch event found. Add tv show to a watch list."}), 404)
+                return no_watch_event_found_response("tv show")
             elif not data:
                 return no_data_response()
             elif status not in ('to-watch', 'watched'):
@@ -359,11 +359,11 @@ class TVShowEvent(Resource):
             existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
 
             if not tv_show_id:
-                return make_response(jsonify({"error" : "No tv show id was received."}), 404)
+                return no_url_id_response("tv show")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not existing_tv_show_watch_event:
-                return make_response(jsonify({"error" : "No tv show watch event found. Add tv show to a watch list."}), 404)
+                return no_watch_event_found_response("tv show")
             else:
                 # Delete existing tv show watch event and Commit change to db
                 db.session.delete(existing_tv_show_watch_event)
