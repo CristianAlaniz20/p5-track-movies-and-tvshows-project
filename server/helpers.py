@@ -3,7 +3,7 @@ from flask import jsonify, make_response
 
 # Helper functions
 def no_data_response():
-    return make_response(jsonify({"error" : "No data was received."}), 404)
+    return make_response(jsonify({"error" : "No data received."}), 404)
 
 def empty_username_or_password_response():
     return make_response(jsonify({"error" : "username and password cannot be empty."}), 404)
@@ -21,7 +21,7 @@ def invalid_status_value_response():
     return make_response(jsonify({"error" : "Invalid status value."}), 404)
 
 def no_url_id_response(id):
-    return make_response(jsonify({"error" : f"No {id} id was received."}), 404)
+    return make_response(jsonify({"error" : f"No {id} id received."}), 404)
 
 def no_watch_event_found_response(event_type):
-    return make_response(jsonify({"error" : f"No {event_type} was found."}), 404)
+    return make_response(jsonify({"error" : f"No {event_type} watch event found."}), 404)
