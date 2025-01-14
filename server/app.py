@@ -165,8 +165,8 @@ class MovieEvent(Resource):
                 return make_response(jsonify({"error" : "No user id found in session."}), 401)
             elif not data:
                 return no_data_response()
-            elif not status:
-                return make_response(jsonify({"error" : "Status cannot be empty."}), 404)
+            elif status not in ('to-watch', 'watched'):
+                return make_response(jsonify({"error" : "Invalid status value."}), 404)
             else:
                 # Create a new MovieWatchEvent instance
                 new_movie_watch_event = MovieWatchEvent(
