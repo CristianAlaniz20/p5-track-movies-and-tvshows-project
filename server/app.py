@@ -69,7 +69,7 @@ class Login(Resource):
             else:
                 if user.authenticate(password):
                     # assign user db id to session user_id
-                    session['user_id'] = new_user.id
+                    session['user_id'] = user.id
 
                     # create response
                     response = {
@@ -148,6 +148,55 @@ class SearchResults(Resource):
         except Exception as e:
             return error_response(e)
 
+class MovieEvent(Resource):
+    def post(self, movie_id):
+        try:
+            data = request.get_json()
+            rating = data['rating']
+            notes = data['notes']
+            status = data['status']
+            existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
+
+            if existing_movie_watch_event:
+                return make_response(jsonify({"error" : "A movie watch event already exists."}), 404)
+            elif not movie_id:
+                return make_response(jsonify({"error" : "No movie id was received."}), 404)
+            elif not session['user_id']:
+                return make_response(jsonify({"error" : "No user id found in session."}), 401)
+            elif not data:
+                return no_data_response()
+            elif not status:
+                return make_response(jsonify({"error" : "Status cannot be empty."}), 404)
+            else:
+                # Create a new MovieWatchEvent instance
+                new_movie_watch_event = MovieWatchEvent(
+                    user_id = session['user_id'],
+                    movie_id=movie_id,
+                    rating=rating,
+                    notes=notes,
+                    status=status
+                )
+
+                # Add and Commit to db
+                db.session.add(new_movie_watch_event)
+                db.session.commit()
+
+                # Create response
+                response = {
+                    "message" : "Movie watch event successfully created.",
+                    "watch_event" : new_movie_watch_event.to_dict(rules=('-user', '-movie',))
+                }
+                
+                return make_response(jsonify(response), 201)
+
+        # User model constraints not met
+        except IntegrityError as e:
+            return error_response(e)
+
+        # All other exceptions
+        except Exception as e:
+            return error_response(e)
+        
 
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -155,7 +204,7 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(SearchResults, '/search_results', endpoint='search_results')
-
+api.add_resource(MovieEvent, '/movie_event/<int:movie_id>', endpoint='movie_event')
 
 
 if __name__ == '__main__':
