@@ -1,7 +1,7 @@
 # Remote library imports
 from flask import jsonify, make_response
 
-# Helper functions
+# Reponse helpers
 def no_data_response():
     return make_response(jsonify({"error" : "No data received."}), 404)
 
@@ -25,3 +25,14 @@ def no_url_id_response(id):
 
 def no_watch_event_found_response(event_type):
     return make_response(jsonify({"error" : f"No {event_type} watch event found."}), 404)
+
+# Validation helpers
+def validate_rating(value):
+    if not isinstance(value, int):
+        raise ValueError("Rating must be an integer.")
+    return value
+
+def validate_notes(value):
+    if not isinstance(value, str):
+        raise ValueError("Notes must be a string.")
+    return value
