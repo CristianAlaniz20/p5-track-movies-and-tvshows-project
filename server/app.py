@@ -425,6 +425,53 @@ class CreateMovie(Resource):
         except Exception as e:
             return error_response(e)
 
+class CreateTVShow(Resource):
+    def post(self):
+        try:
+            data = request.get_json()
+            title = data['title']
+            poster_url = data['poster_url']
+            genre = data['genre']
+            seasons = data['seasons']
+            description = data['description']
+            release_date = data['release_date']
+            streaming_options = data['streaming_options']
+
+            if not data:
+                return no_data_response()
+            elif not all([title, poster_url, genre, seasons, description, release_date,streaming_options]):
+                return make_response(jsonify({"error" : "Fields cannot be empty"}), 404)
+            else:
+                # Create new tv show instance
+                new_tv_show = TVShow(
+                    title=title,
+                    poster_url=poster_url,
+                    genre=genre,
+                    seasons=seasons,
+                    description=description,
+                    release_date=release_date,
+                    streaming_options=streaming_options
+                )
+
+                # Add and Commit to db
+                db.session.add(new_tv_show)
+                db.session.commit()
+            
+                # Create response
+                response = {
+                    "message" : "new tv show created.",
+                    "new_movie" : new_tv_show.to_dict()
+                }
+
+                return make_response(jsonify(response), 201)
+        
+        # User model constraints not met
+        except IntegrityError as e:
+            return error_response(e)
+
+        # All other exceptions
+        except Exception as e:
+            return error_response(e)
 
 # Adding resources to api
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -435,6 +482,7 @@ api.add_resource(SearchResults, '/search_results', endpoint='search_results')
 api.add_resource(MovieEvent, '/movie_event/<int:movie_id>', endpoint='movie_event')
 api.add_resource(TVShowEvent, '/tv_show_event/<int:tv_show_id>', endpoint='tv_show_event')
 api.add_resource(CreateMovie, '/create_movie', endpoint='create_movie')
+api.add_resource(CreateTVShow, '/create_tv_show', endpoint='create_tv_show')
 
 
 if __name__ == '__main__':
