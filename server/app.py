@@ -445,7 +445,28 @@ class MovieResource(Resource):
         except Exception as e:
             return error_response(e)
 
-class CreateTVShow(Resource):
+class TVShowResource(Resource):
+    def get(self, tv_show_id):
+        try:
+            existing_tv_show = TVShow.query.filter_by(id=tv_show_id).first()
+
+            if not tv_show_id:
+                return no_url_id_response("tv show")
+            elif not existing_tv_show:
+                return make_response(jsonify({"error" : "Could not find tv show."}), 404)
+            else:
+                # Create response
+                response = {
+                    "message" : "TV Show found.",
+                    "tv_show" : existing_tv_show.to_dict()
+                }
+
+                return make_response(jsonify(response), 200)
+        
+         # All other exceptions
+        except Exception as e:
+            return error_response(e)
+
     def post(self):
         try:
             data = request.get_json()
@@ -502,7 +523,7 @@ api.add_resource(SearchResults, '/search_results', endpoint='search_results')
 api.add_resource(MovieEvent, '/movie_event/<int:movie_id>', endpoint='movie_event')
 api.add_resource(TVShowEvent, '/tv_show_event/<int:tv_show_id>', endpoint='tv_show_event')
 api.add_resource(MovieResource, '/movie/<int:movie_id>', endpoint='movie')
-api.add_resource(CreateTVShow, '/create_tv_show', endpoint='create_tv_show')
+api.add_resource(TVShowResource, '/tv_show/<int:tv_show_id>', endpoint='tv_show')
 
 
 if __name__ == '__main__':
