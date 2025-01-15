@@ -2,8 +2,10 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import UniqueConstraint
+from sqlalchemy.orm import validates
 
 from config import db, bcrypt
+from helpers import validate_rating, validate_notes
 
 # Models go here!
 class User(db.Model, SerializerMixin):
@@ -102,6 +104,15 @@ class MovieWatchEvent(db.Model, SerializerMixin):
     # Constraint to ensure no duplicate instances of user_id and trail_id pairs
     __table_args__ = (UniqueConstraint('user_id', 'movie_id', name='no_duplicate_user_and_movie_instance'),)
 
+    # Column validations
+    @validates('rating')
+    def validates_rating(self, key, value):
+      return validate_rating(value)
+
+    @validates('notes')
+    def validates_notes(self, key, value):
+      return validate_notes(value)
+
     # For debugging purposes
     def __repr__(self):
       return f'MovieWatchEvent: ID {self.id}, User_ID {self.user_id}, Movie_ID {self.movie_id}, Rating {self.rating}, Notes {self.notes}, Status {self.status}'
@@ -124,6 +135,15 @@ class TVShowWatchEvent(db.Model, SerializerMixin):
 
     # Constraint to ensure no duplicate instances of user_id and trail_id pairs
     __table_args__ = (UniqueConstraint('user_id', 'tv_show_id', name='no_duplicate_user_and_tv_show_instance'),)
+
+    # Column validations
+    @validates('rating')
+    def validates_rating(self, key, value):
+      return validate_rating(value)
+
+    @validates('notes')
+    def validates_notes(self, key, value):
+      return validate_notes(value)
 
     # For debugging purposes
     def __repr__(self):
