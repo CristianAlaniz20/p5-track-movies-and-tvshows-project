@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-import LogInForm from "../components/LogInForm";
-import SignUpForm from "../components/SignUpForm";
+import LoginForm from "../components/LoginForm";
+import SignupForm from "../components/SignupForm";
 
 function LoginPage() {
     const [hasAccount, setHasAccount] = useState(true)
@@ -13,14 +13,14 @@ function LoginPage() {
             <Header />
             {hasAccount ? (
                 <>
-                    <LogInForm />
+                    <LoginForm />
                     <br />
                     <p>Don't have an account?</p>
                     <button onClick={handleHasAccountButtonClick}>Create An Account</button>
                 </>
             ) : (
                 <>
-                    <SignUpForm />
+                    <SignupForm />
                     <br />
                     <p>Already have an account?</p>
                     <button onClick={handleHasAccountButtonClick}>Go to Log In</button>
