@@ -61,6 +61,9 @@ class Movie(db.Model, SerializerMixin):
     # Create model relationships
     movie_watch_events = db.relationship("MovieWatchEvent", back_populates="movie", cascade="all, delete-orphan")
 
+    # Serialization rules
+    serialize_rules = ('-user', '-movie_watch_events',)
+
     # For debugging purposes
     def __repr__(self):
       return f'Movie: ID {self.id}, Title {self.title}, Poster_URL {self.poster_url}, Genre {self.genre}, Duration {self.duration}, Description {self.description}, Release_Date {self.release_date}, Streaming_Options {self.streaming_options}'
@@ -81,6 +84,9 @@ class TVShow(db.Model, SerializerMixin):
     # Create model relationships
     tv_show_watch_events = db.relationship("TVShowWatchEvent", back_populates="tv_show", cascade="all, delete-orphan")
 
+    # Serialization rules
+    serialize_rules = ('-user', '-tv_show_watch_events',)
+
     # For debugging purposes
     def __repr__(self):
       return f'TVShow: ID {self.id}, Title {self.title}, Poster_URL {self.poster_url}, Genre {self.genre}, Duration {self.duration}, Description {self.description}, Release_Date {self.release_date}, Streaming_Options {self.streaming_options}'
@@ -100,6 +106,9 @@ class MovieWatchEvent(db.Model, SerializerMixin):
     user = db.relationship("User", back_populates="movie_watch_events")
 
     movie = db.relationship("Movie", back_populates="movie_watch_events")
+
+    # Serialization rules
+    serialize_rules = ('-user',)
 
     # Constraint to ensure no duplicate instances of user_id and trail_id pairs
     __table_args__ = (UniqueConstraint('user_id', 'movie_id', name='no_duplicate_user_and_movie_instance'),)
@@ -132,6 +141,9 @@ class TVShowWatchEvent(db.Model, SerializerMixin):
     user = db.relationship("User", back_populates="tv_show_watch_events")
 
     tv_show = db.relationship("TVShow", back_populates="tv_show_watch_events")
+
+    # Serialization rules
+    serialize_rules = ('-user',)
 
     # Constraint to ensure no duplicate instances of user_id and trail_id pairs
     __table_args__ = (UniqueConstraint('user_id', 'tv_show_id', name='no_duplicate_user_and_tv_show_instance'),)
