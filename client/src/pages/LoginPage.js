@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 
-function LoginPage() {
+function LoginPage({ setIsloggedIn }) {
     const [hasAccount, setHasAccount] = useState(true)
 
     const handleHasAccountButtonClick = () => setHasAccount(!hasAccount)
@@ -13,7 +13,7 @@ function LoginPage() {
             <Header />
             {hasAccount ? (
                 <>
-                    <LoginForm />
+                    <LoginForm setIsloggedIn={setIsloggedIn} />
                     <br />
                     <p>Don't have an account?</p>
                     <button onClick={handleHasAccountButtonClick}>Create An Account</button>
