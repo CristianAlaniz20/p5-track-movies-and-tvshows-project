@@ -59,6 +59,7 @@ class Login(Resource):
             username = data['username']
             password = data['password']
             user = User.query.filter_by(username=username).first()
+            print(user.to_dict())
 
             if not data:
                 return no_data_response()
@@ -184,7 +185,7 @@ class MovieEvent(Resource):
                 # Create response
                 response = {
                     "message" : "Movie watch event successfully created.",
-                    "watch_event" : new_movie_watch_event.to_dict(rules=('-user', '-movie',))
+                    "watch_event" : new_movie_watch_event.to_dict()
                 }
                 
                 return make_response(jsonify(response), 201)
@@ -227,7 +228,7 @@ class MovieEvent(Resource):
                 # Create response
                 response = {
                     "message" : "Sucessfully updated movie watch event.",
-                    "watch_event" : existing_movie_watch_event.to_dict(rules=('-user', '-movie',))
+                    "watch_event" : existing_movie_watch_event.to_dict()
                 }
 
                 return make_response(jsonify(response), 200)
@@ -298,7 +299,7 @@ class TVShowEvent(Resource):
                 # Create response
                 response = {
                     "message" : "TV Show watch event successfully created.",
-                    "watch_event" : new_tv_show_watch_event.to_dict(rules=('-user', '-tv_show',))
+                    "watch_event" : new_tv_show_watch_event.to_dict()
                 }
                 
                 return make_response(jsonify(response), 201)
@@ -341,7 +342,7 @@ class TVShowEvent(Resource):
                 # Create response
                 response = {
                     "message" : "Sucessfully updated tv show watch event.",
-                    "watch_event" : existing_tv_show_watch_event.to_dict(rules=('-user', '-tv_show',))
+                    "watch_event" : existing_tv_show_watch_event.to_dict()
                 }
 
                 return make_response(jsonify(response), 200)
