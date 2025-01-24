@@ -61,7 +61,7 @@ if __name__ == '__main__':
             random_month = rc(months)
             random_day = randint(1, 31)
             random_year = randint(1950, 2024)
-            random_date = f"{random_month}|{random_day}|{random_year}"
+            random_date = f"{random_month} {random_day} {random_year}"
             return random_date
 
         def unique_streaming_options_string():
