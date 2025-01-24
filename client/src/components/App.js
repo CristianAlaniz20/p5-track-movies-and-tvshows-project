@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
+import HomePage from "../pages/HomePage";
 
 
 function App() {
@@ -9,8 +10,8 @@ function App() {
   if (!isLoggedIn) {
     return <LoginPage setIsloggedIn={setIsLoggedIn} />
   }
-  
-  return <h1>Project Client</h1>;
+
+  return <HomePage />;
 }
 
 export default App;
