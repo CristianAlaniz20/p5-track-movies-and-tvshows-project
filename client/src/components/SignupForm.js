@@ -25,9 +25,10 @@ function SignUpForm() {
               body: JSON.stringify(values, null, 2),
             })
             .then(res => {
-                if (res.status == 201) {
+                if (res.status === 201) {
                     res.json()
-                    .then(responseUser => setUser(responseUser))
+                    console.log("Successfully signed up!")
+                    //.then(responseUser => setUser(responseUser))
                 } 
             })
             .catch(error => console.error(error))
