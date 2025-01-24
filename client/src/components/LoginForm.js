@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik"
 import * as yup from "yup"
 
-function LogInForm({ setIsloggedIn }) {
+function LoginForm({ setIsloggedIn }) {
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter a username."),
         password: yup.string().required("Must enter a password.")
@@ -67,4 +67,4 @@ function LogInForm({ setIsloggedIn }) {
     )
 }
 
-export default LogInForm;
+export default LoginForm;
