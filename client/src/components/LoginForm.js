@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik"
 import * as yup from "yup"
 
-function LogInForm() {
+function LogInForm({ setIsloggedIn }) {
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter a username."),
         password: yup.string().required("Must enter a password.")
@@ -24,10 +24,13 @@ function LogInForm() {
                 body: JSON.stringify(values, null, 2),
             })
             .then(res => {
-                if (res.status == 201) {
+                if (res.status === 200) {
                     res.json()
                     // get setUser from Redux context
-                    .then(responseUser => setUser(responseUser))
+                    .then(() => {
+                        //setUser(responseUser)
+                        setIsloggedIn(true)
+                    })
                 }
             })
             .catch(error => console.error(error))
