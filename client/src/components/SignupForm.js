@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function SignUpForm() {
+function SignupForm() {
     // formik validation schema
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter a username."),
@@ -65,4 +65,4 @@ function SignUpForm() {
     )
 }
 
-export default SignUpForm
+export default SignupForm
