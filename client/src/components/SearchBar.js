@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function SearchBar() {
+function SearchBar({ setResults }) {
     // formik validation schema
     const formSchema = yup.object().shape({
         title: yup.string().required("Must enter a title before searching."),
@@ -25,10 +25,7 @@ function SearchBar() {
                 .then(res => {
                     if (res.status === 200) {
                         res.json()
-                        .then(responseSearchResults => {
-                            //do work with returned list
-                            console.log(responseSearchResults)
-                        })
+                        .then(responseSearchResults => setResults(responseSearchResults.results))
                     }
                 })
                 .catch(error => console.error(error))
@@ -38,7 +35,7 @@ function SearchBar() {
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
-                <label htmlFor='title'>Enter a Title to Search: </label>
+                <label htmlFor='title'>Enter a Title: </label>
                 <input
                 id='title' 
                 name='title'
