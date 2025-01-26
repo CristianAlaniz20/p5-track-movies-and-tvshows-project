@@ -58,8 +58,7 @@ class Login(Resource):
             data = request.get_json()
             username = data['username']
             password = data['password']
-            user = User.query.filter_by(username=username).first()
-            print(user.to_dict())
+            user = User.query.filter_by(username=username).first() 
 
             if not data:
                 return no_data_response()
@@ -524,7 +523,9 @@ api.add_resource(SearchResults, '/search_results', endpoint='search_results')
 api.add_resource(MovieEvent, '/movie_event/<int:movie_id>', endpoint='movie_event')
 api.add_resource(TVShowEvent, '/tv_show_event/<int:tv_show_id>', endpoint='tv_show_event')
 api.add_resource(MovieResource, '/movie/<int:movie_id>', endpoint='movie')
+api.add_resource(MovieResource, '/movie', endpoint='create_movie')
 api.add_resource(TVShowResource, '/tv_show/<int:tv_show_id>', endpoint='tv_show')
+api.add_resource(TVShowResource, '/tv_show', endpoint='create_tv_show')
 
 
 if __name__ == '__main__':
