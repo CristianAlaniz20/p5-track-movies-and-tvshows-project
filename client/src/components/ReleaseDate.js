@@ -41,7 +41,7 @@ function ReleaseDate({ setReleaseDate }) {
         {/* Create an option for every number in day range */}
         <select onChange={(e) => setDay(e.target.value)}>
             <option value="">Select Day</option>
-            {range(1, 31).map(day => <DropdownOption key={day} optionValue={day} />)}
+            {range(1, 32).map(day => <DropdownOption key={day} optionValue={day} />)}
         </select>
         {/* Create an option for every number in year range */}
         <select onChange={(e) => setYear(e.target.value)}>
