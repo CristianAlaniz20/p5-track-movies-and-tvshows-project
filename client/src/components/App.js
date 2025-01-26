@@ -5,6 +5,7 @@ import HomePage from "../pages/HomePage";
 import Header from "./Header";
 import CreateMoviePage from "../pages/CreateMoviePage";
 import CreateTVShowPage from "../pages/CreateTVShowPage";
+import NavBar from "./NavBar";
 
 
 function App() {
@@ -36,6 +37,8 @@ function App() {
     <Router>
         <div>
           <Header />
+          <NavBar setIsLoggedIn={setIsLoggedIn} />
+          <br />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/create_movie" component={CreateMoviePage} />
