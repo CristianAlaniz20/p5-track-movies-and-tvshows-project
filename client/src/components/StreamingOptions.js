@@ -29,6 +29,7 @@ function StreamingOptions({ setStreamingOptions }) {
 
     return (
         <div>
+            <label>Select all streaming service options for the movie:</label>
             {/* Create a checkbox for every service in streaming service */}
             {streaming_services.map(service => (
                 <div key={service} >
