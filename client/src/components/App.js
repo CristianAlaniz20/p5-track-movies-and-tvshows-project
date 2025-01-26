@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import Header from "./Header";
-import CreateMovieForm from "./CreateMovieForm";
+import CreateMoviePage from "../pages/CreateMoviePage";
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
           <Header />
           <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route path="/create_movie" component={CreateMovieForm} />
+            <Route path="/create_movie" component={CreateMoviePage} />
           </Switch>
         </div>
     </Router>
