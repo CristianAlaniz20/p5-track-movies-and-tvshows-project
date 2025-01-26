@@ -4,6 +4,7 @@ import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import Header from "./Header";
 import CreateMoviePage from "../pages/CreateMoviePage";
+import CreateTVShowPage from "../pages/CreateTVShowPage";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/create_movie" component={CreateMoviePage} />
+            <Route path="/create_tv_show" component={CreateTVShowPage} />
           </Switch>
         </div>
     </Router>
