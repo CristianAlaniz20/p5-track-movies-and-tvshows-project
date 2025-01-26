@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
+import Header from "./Header";
+import CreateMovieForm from "./CreateMovieForm";
 
 
 function App() {
@@ -11,7 +13,17 @@ function App() {
     return <LoginPage setIsloggedIn={setIsLoggedIn} />
   }
 
-  return <HomePage />;
+  return (
+    <Router>
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/create_movie" component={CreateMovieForm} />
+          </Switch>
+        </div>
+    </Router>
+  )
 }
 
 export default App;
