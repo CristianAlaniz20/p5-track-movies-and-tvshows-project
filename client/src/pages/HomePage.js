@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 
@@ -28,7 +27,6 @@ function HomePage() {
 
     return (
         <div>
-            <Header />
             <SearchBar setResults={setResults} />
             {/* dropdown for filtration */}
             <label htmlFor="search-filter">Filter: </label>
