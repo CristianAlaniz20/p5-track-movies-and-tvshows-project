@@ -12,7 +12,7 @@ function StreamingOptions({ setStreamingOptions }) {
 
     useEffect(() => {
         // Update the parent component with the current selection of streaming services
-        setStreamingOptions(selectedServices.join('| '));
+        setStreamingOptions(selectedServices.join('|'));
     }, [selectedServices]);
 
     function handleCheckboxChange(service) {
