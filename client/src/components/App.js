@@ -6,10 +6,12 @@ import Header from "./Header";
 import CreateMoviePage from "../pages/CreateMoviePage";
 import CreateTVShowPage from "../pages/CreateTVShowPage";
 import NavBar from "./NavBar";
+import MovieDetails from "../pages/MovieDetails";
+import TVShowDetails from "../pages/TVShowDetails";
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false) // isLoggedIn state
 
   useEffect(() => {
     // auto-login
@@ -29,6 +31,7 @@ function App() {
     .catch(error => console.error(error))
   }, []);
 
+  // route to login page if user isn't logged in
   if (!isLoggedIn) {
     return <LoginPage setIsloggedIn={setIsLoggedIn} />
   }
@@ -43,6 +46,8 @@ function App() {
             <Route exact path="/" component={HomePage} />
             <Route path="/create_movie" component={CreateMoviePage} />
             <Route path="/create_tv_show" component={CreateTVShowPage} />
+            <Route path="/movie/:movie_id" component={MovieDetails} />
+            <Route path="/tv_show/:tv_show_id" component={TVShowDetails} />
           </Switch>
         </div>
     </Router>
