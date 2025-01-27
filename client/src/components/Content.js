@@ -1,45 +1,21 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 function Content({ result }) {
-    // converts minutes integer to hours and minutes string
-    function convertMinutesToHoursAndMinutes(minutes) {
-        const hours = Math.floor(minutes / 60)
-        const remainingMinutes = minutes % 60
-        return `${hours} hour(s) and ${remainingMinutes} minute(s)`
-    }
+    const history = useHistory()
 
-    // converts a streaming options string into an array
-    function convertStringToAnArray(string) {
-        const streaming_options_array = string.split("|")
-        return streaming_options_array
-    }
-
-    // takes in the jsx that is different and includes it into the rest of the intended return
-    function renderCommonDetailsWithDifference(jsx) {
-        return (
-            <div>
-                <img src={result.poster_url} alt={`${result.title} poster`}/>
-                    <h3>{result.title}</h3>
-                    <p>Genre: {result.genre}</p>
-                    {jsx}
-                    <p>Released: {result.release_date}</p>
-                    <p>Description: {result.description}</p>
-                    <p>Streaming Options:</p>
-                    <ul>
-                        {/* lists all streaming options */}
-                        {convertStringToAnArray(result.streaming_options).map((option, index) => <li key={index}>{option}</li>)}
-                    </ul>
-            </div>
-        )
-    }
+    // reroute to MovieDetails component
+    const handleMovieImageClick = () => history.push(`/movie/${result.id}`)
+    // reroute to TVShowDetails component
+    const handleTVShowImageClick = () => history.push(`/tv_show/${result.id}`)
 
     return (
         <>
             {/* checks if result has a duration attribute to differentiate between a Movie and TV Show */}
             {result.duration ? (
-                renderCommonDetailsWithDifference(<p>Duration: {convertMinutesToHoursAndMinutes(result.duration)}</p>)
+                <img src={result.poster_url} alt={`${result.title} poster`} onClick={handleMovieImageClick} />
             ) : (
-                renderCommonDetailsWithDifference(<p>Seasons: {result.seasons}</p>)
+                <img src={result.poster_url} alt={`${result.title} poster`} onClick={handleTVShowImageClick} />
             )}
         </>
     )
