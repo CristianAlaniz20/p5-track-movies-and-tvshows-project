@@ -1,14 +1,13 @@
 import React from "react";
 import Content from "./Content";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 
 function SearchResults({ results }) {
     const history = useHistory()
 
-    // reroute to createMovieForm component
+    // reroute to createMoviePage component
     const handleCreateMovieClick = () => history.push('/create_movie')
-
-    // reroute to createTVShowForm component
+    // reroute to createTVShowPage component
     const handleCreateTVShowClick = () => history.push('/create_tv_show')
 
     return (
