@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
@@ -14,28 +14,15 @@ import { UserContext } from "../contexts/UserContext";
 
 
 function App() {
-  const { user, setUser } = useContext(UserContext) // UserContext value and setter function
-
-  useEffect(() => {
-    // auto-login
-    fetch("/check_session")
-    .then((res) => {
-      if (res.status === 200) {
-        // for testing purposes
-        console.log("Session id was found.")
-        return res.json()
-      }
-      else {
-        // for testing purposes
-        console.log("No session id was found.")
-      }
-    })
-    .then(response => setUser(response.user))
-    .catch(error => console.error(error))
-  }, [setUser]);
+  const { user, isAuthenticated } = useContext(UserContext) // user and isAuthenticated states from UserContext
+  /*if (user) {
+    console.log(user)
+    console.log(user.movies)
+    console.log(user.tv_shows)
+  }*/
 
   // route to login page if user isn't logged in
-  if (!user) {
+  if (!isAuthenticated) {
     return <LoginPage />
   }
 
