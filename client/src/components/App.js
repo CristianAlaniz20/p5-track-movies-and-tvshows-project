@@ -8,6 +8,8 @@ import CreateTVShowPage from "../pages/CreateTVShowPage";
 import NavBar from "./NavBar";
 import MovieDetails from "../pages/MovieDetails";
 import TVShowDetails from "../pages/TVShowDetails";
+import CreateMovieWatchEvent from "./CreateMovieWatchEvent";
+import CreateTVShowWatchEvent from "./CreateTVShowWatchEvent";
 
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
             <Route path="/create_tv_show" component={CreateTVShowPage} />
             <Route path="/movie/:movie_id" component={MovieDetails} />
             <Route path="/tv_show/:tv_show_id" component={TVShowDetails} />
+            <Route path="/add_to_movie_list/:movie_id" component={CreateMovieWatchEvent} />
+            <Route path="/add_to_tv_show_list/:tv_show_id" component={CreateTVShowWatchEvent} />
           </Switch>
         </div>
     </Router>
