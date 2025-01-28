@@ -1,13 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
-function NavBar({ setIsLoggedIn }) {
+function NavBar() {
+    const { setUser } = useContext(UserContext) // setter function for user state
+
     function handleLogoutClick() {
         // DELETE request to Logout Resource
         fetch("/logout", { method: "DELETE" })
         .then(res => {
             if (res.status === 200) {
-                setIsLoggedIn(false)
+                setUser(null)
             }
         })
         .catch(error => console.error(error))
