@@ -109,7 +109,7 @@ class CheckSession(Resource):
             if user:
                 response = {
                     "message" : "Session user found",
-                    "user" : new_user.dump(user)
+                    "user" : user_schema.dump(user)
                 }
                 return make_response(jsonify(response), 200)
             else:
