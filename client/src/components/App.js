@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
@@ -10,10 +10,11 @@ import MovieDetails from "../pages/MovieDetails";
 import TVShowDetails from "../pages/TVShowDetails";
 import CreateMovieWatchEvent from "./CreateMovieWatchEvent";
 import CreateTVShowWatchEvent from "./CreateTVShowWatchEvent";
+import { UserContext } from "../contexts/UserContext";
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false) // isLoggedIn state
+  const { user, setUser } = useContext(UserContext) // UserContext value and setter function
 
   useEffect(() => {
     // auto-login
@@ -22,27 +23,27 @@ function App() {
       if (res.status === 200) {
         // for testing purposes
         console.log("Session id was found.")
-        setIsLoggedIn(true)
+        return res.json()
       }
       else {
         // for testing purposes
         console.log("No session id was found.")
-        setIsLoggedIn(false)
       }
     })
+    .then(response => setUser(response.user))
     .catch(error => console.error(error))
-  }, []);
+  }, [setUser]);
 
   // route to login page if user isn't logged in
-  if (!isLoggedIn) {
-    return <LoginPage setIsloggedIn={setIsLoggedIn} />
+  if (!user) {
+    return <LoginPage />
   }
 
   return (
     <Router>
         <div>
           <Header />
-          <NavBar setIsLoggedIn={setIsLoggedIn} />
+          <NavBar />
           <br />
           <Switch>
             <Route exact path="/" component={HomePage} />
