@@ -11,8 +11,24 @@ from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 # Add your model imports
 from models import User, Movie, TVShow, MovieWatchEvent, TVShowWatchEvent
+# Serialization/Deserialization imports
+from schemas import UserSchema, MovieSchema, TVShowSchema, MovieWatchEventSchema, TVShowWatchEventSchema
+# Initialize schema instances
+user_schema = UserSchema()
+movie_schema = MovieSchema()
+tv_show_schema = TVShowSchema()
+movie_watch_event_schema = MovieWatchEventSchema()
+tv_show_watch_event_schema = TVShowWatchEventSchema()
 # Helper functions imports
-from helpers import no_data_response, empty_username_or_password_response, error_response, no_user_found_response, no_session_id_response, invalid_status_value_response, no_watch_event_found_response, no_url_id_response
+from helpers import (
+    no_data_response, 
+    empty_username_or_password_response, 
+    error_response, no_user_found_response, 
+    no_session_id_response, 
+    invalid_status_value_response, 
+    no_watch_event_found_response, 
+    no_url_id_response
+)
 
 # Views go here!
 
@@ -39,7 +55,7 @@ class Signup(Resource):
                 # Create response
                 response = {
                     "message" : "User successfully created!",
-                    "new_user" : new_user.to_dict()
+                    "new_user" : user_schema.dump(new_user)
                 }
 
                 return make_response(jsonify(response), 201)
@@ -74,7 +90,7 @@ class Login(Resource):
                     # create response
                     response = {
                         "message" : "Successfully logged in.",
-                        "user" : user.to_dict()
+                        "user" : user_schema.dump(user)
                     }
 
                     return make_response(jsonify(response), 200)
@@ -93,7 +109,7 @@ class CheckSession(Resource):
             if user:
                 response = {
                     "message" : "Session user found",
-                    "user" : user.to_dict()
+                    "user" : new_user.dump(user)
                 }
                 return make_response(jsonify(response), 200)
             else:
@@ -123,8 +139,8 @@ class SearchResults(Resource):
                 return make_response(jsonify({"error" : "Enter a title before searching."}), 404)
             else:
                 # Query Movie and TVShow db table for content that matches the title received
-                movie_results = [movie.to_dict() for movie in Movie.query.all() if title.lower() in movie.title.lower()]
-                tv_show_results = [tv_show.to_dict() for tv_show in TVShow.query.all() if title.lower() in tv_show.title.lower()]
+                movie_results = [movie_schema.dump(movie) for movie in Movie.query.all() if title.lower() in movie.title.lower()]
+                tv_show_results = [tv_show_schema.dump(tv_show) for tv_show in TVShow.query.all() if title.lower() in tv_show.title.lower()]
 
                 search_results = movie_results + tv_show_results
 
@@ -184,7 +200,7 @@ class MovieEvent(Resource):
                 # Create response
                 response = {
                     "message" : "Movie watch event successfully created.",
-                    "watch_event" : new_movie_watch_event.to_dict()
+                    "watch_event" : movie_watch_event_schema.dump(new_movie_watch_event)
                 }
                 
                 return make_response(jsonify(response), 201)
@@ -227,7 +243,7 @@ class MovieEvent(Resource):
                 # Create response
                 response = {
                     "message" : "Sucessfully updated movie watch event.",
-                    "watch_event" : existing_movie_watch_event.to_dict()
+                    "watch_event" : movie_watch_event_schema.dump(existing_movie_watch_event)
                 }
 
                 return make_response(jsonify(response), 200)
@@ -298,7 +314,7 @@ class TVShowEvent(Resource):
                 # Create response
                 response = {
                     "message" : "TV Show watch event successfully created.",
-                    "watch_event" : new_tv_show_watch_event.to_dict()
+                    "watch_event" : tv_show_watch_event_schema.dump(new_tv_show_watch_event)
                 }
                 
                 return make_response(jsonify(response), 201)
@@ -341,7 +357,7 @@ class TVShowEvent(Resource):
                 # Create response
                 response = {
                     "message" : "Sucessfully updated tv show watch event.",
-                    "watch_event" : existing_tv_show_watch_event.to_dict()
+                    "watch_event" : tv_show_watch_event_schema.dump(existing_tv_show_watch_event)
                 }
 
                 return make_response(jsonify(response), 200)
@@ -389,7 +405,7 @@ class MovieResource(Resource):
                 # Create response
                 response = {
                     "message" : "Movie found.",
-                    "movie" : existing_movie.to_dict()
+                    "movie" : movie_schema.dump(existing_movie)
                 }
 
                 return make_response(jsonify(response), 200)
@@ -432,7 +448,7 @@ class MovieResource(Resource):
                 # Create response
                 response = {
                     "message" : "new movie created.",
-                    "new_movie" : new_movie.to_dict()
+                    "new_movie" : movie_schema.dump(new_movie)
                 }
 
                 return make_response(jsonify(response), 201)
@@ -458,7 +474,7 @@ class TVShowResource(Resource):
                 # Create response
                 response = {
                     "message" : "TV Show found.",
-                    "tv_show" : existing_tv_show.to_dict()
+                    "tv_show" : tv_show_schema.dump(existing_tv_show)
                 }
 
                 return make_response(jsonify(response), 200)
@@ -501,7 +517,7 @@ class TVShowResource(Resource):
                 # Create response
                 response = {
                     "message" : "new tv show created.",
-                    "new_movie" : new_tv_show.to_dict()
+                    "new_movie" : tv_show_schema.dump(new_tv_show)
                 }
 
                 return make_response(jsonify(response), 201)
