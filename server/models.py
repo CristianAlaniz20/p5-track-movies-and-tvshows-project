@@ -1,4 +1,3 @@
-from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import UniqueConstraint
@@ -8,7 +7,7 @@ from config import db, bcrypt
 from helpers import validate_rating, validate_notes
 
 # Models go here!
-class User(db.Model, SerializerMixin):
+class User(db.Model):
     __tablename__ = "users"
 
     # Create User Columns
@@ -45,7 +44,7 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
 
-class Movie(db.Model, SerializerMixin):
+class Movie(db.Model):
     __tablename__ = "movies"
 
     # Create Movie Columns
@@ -61,14 +60,11 @@ class Movie(db.Model, SerializerMixin):
     # Create model relationships
     movie_watch_events = db.relationship("MovieWatchEvent", back_populates="movie", cascade="all, delete-orphan")
 
-    # Serialization rules
-    serialize_rules = ('-user', '-movie_watch_events',)
-
     # For debugging purposes
     def __repr__(self):
       return f'Movie: ID {self.id}, Title {self.title}, Poster_URL {self.poster_url}, Genre {self.genre}, Duration {self.duration}, Description {self.description}, Release_Date {self.release_date}, Streaming_Options {self.streaming_options}'
 
-class TVShow(db.Model, SerializerMixin):
+class TVShow(db.Model):
     __tablename__ = "tv_shows"
 
     # Create TVShow Columns
@@ -84,14 +80,11 @@ class TVShow(db.Model, SerializerMixin):
     # Create model relationships
     tv_show_watch_events = db.relationship("TVShowWatchEvent", back_populates="tv_show", cascade="all, delete-orphan")
 
-    # Serialization rules
-    serialize_rules = ('-user', '-tv_show_watch_events',)
-
     # For debugging purposes
     def __repr__(self):
       return f'TVShow: ID {self.id}, Title {self.title}, Poster_URL {self.poster_url}, Genre {self.genre}, Duration {self.duration}, Description {self.description}, Release_Date {self.release_date}, Streaming_Options {self.streaming_options}'
 
-class MovieWatchEvent(db.Model, SerializerMixin):
+class MovieWatchEvent(db.Model):
     __tablename__ = "movie_watch_events"
 
     # Create MovieWatchEvent Columns
@@ -106,9 +99,6 @@ class MovieWatchEvent(db.Model, SerializerMixin):
     user = db.relationship("User", back_populates="movie_watch_events")
 
     movie = db.relationship("Movie", back_populates="movie_watch_events")
-
-    # Serialization rules
-    serialize_rules = ('-user',)
 
     # Constraint to ensure no duplicate instances of user_id and trail_id pairs
     __table_args__ = (UniqueConstraint('user_id', 'movie_id', name='no_duplicate_user_and_movie_instance'),)
@@ -126,7 +116,7 @@ class MovieWatchEvent(db.Model, SerializerMixin):
     def __repr__(self):
       return f'MovieWatchEvent: ID {self.id}, User_ID {self.user_id}, Movie_ID {self.movie_id}, Rating {self.rating}, Notes {self.notes}, Status {self.status}'
 
-class TVShowWatchEvent(db.Model, SerializerMixin):
+class TVShowWatchEvent(db.Model):
     __tablename__ = "tv_show_watch_events"
 
     # Create TVShowWatchEvent Columns
@@ -141,9 +131,6 @@ class TVShowWatchEvent(db.Model, SerializerMixin):
     user = db.relationship("User", back_populates="tv_show_watch_events")
 
     tv_show = db.relationship("TVShow", back_populates="tv_show_watch_events")
-
-    # Serialization rules
-    serialize_rules = ('-user',)
 
     # Constraint to ensure no duplicate instances of user_id and trail_id pairs
     __table_args__ = (UniqueConstraint('user_id', 'tv_show_id', name='no_duplicate_user_and_tv_show_instance'),)
