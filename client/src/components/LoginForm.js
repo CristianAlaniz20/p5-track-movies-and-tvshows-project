@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik"
 import * as yup from "yup"
+import { UserContext } from "../contexts/UserContext";
 
-function LoginForm({ setIsloggedIn }) {
+function LoginForm() {
+    const { setUser } = useContext(UserContext) 
+
+    // login form schema validation
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter a username."),
         password: yup.string().required("Must enter a password.")
@@ -25,14 +29,11 @@ function LoginForm({ setIsloggedIn }) {
             })
             .then(res => {
                 if (res.status === 200) {
-                    res.json()
+                    return res.json()
                     // get setUser from Redux context
-                    .then(() => {
-                        //setUser(responseUser)
-                        setIsloggedIn(true)
-                    })
                 }
             })
+            .then(response => setUser(response.user))
             .catch(error => console.error(error))
         },
     })
