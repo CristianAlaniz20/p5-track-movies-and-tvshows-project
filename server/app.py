@@ -171,17 +171,14 @@ class MovieEvent(Resource):
             rating = data['rating']
             notes = data['notes']
             status = data['status']
-            existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
-
-            if existing_movie_watch_event:
-                return make_response(jsonify({"error" : "A movie watch event already exists."}), 404)
-            elif not movie_id:
+            
+            if not movie_id:
                 return no_url_id_response("movie")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('watchlist', 'watched'):
                 return invalid_status_value_response()
             else:
                 # Create a new MovieWatchEvent instance
@@ -229,7 +226,7 @@ class MovieEvent(Resource):
                 return no_watch_event_found_response("movie")
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('watchlist', 'watched'):
                 return invalid_status_value_response()
             else:
                 # Change watch event values to new values
@@ -285,17 +282,14 @@ class TVShowEvent(Resource):
             rating = data['rating']
             notes = data['notes']
             status = data['status']
-            existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
-
-            if existing_tv_show_watch_event:
-                return make_response(jsonify({"error" : "A tv show watch event already exists."}), 404)
+            
             elif not tv_show_id:
                 return no_url_id_response("tv show")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('watchlist', 'watched'):
                 return invalid_status_value_response()
             else:
                 # Create a new TVShowWatchEvent instance
@@ -343,7 +337,7 @@ class TVShowEvent(Resource):
                 return no_watch_event_found_response("tv show")
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('watchlist', 'watched'):
                 return invalid_status_value_response()
             else:
                 # Change watch event values to new values
