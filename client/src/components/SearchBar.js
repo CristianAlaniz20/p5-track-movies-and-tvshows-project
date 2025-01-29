@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { ContentContext } from "../contexts/ContentContext";
 
-function SearchBar({ setResults }) {
+function SearchBar() {
+    const { searchContent } = useContext(ContentContext) // searchContent method from ContentContext
+
     // formik validation schema
     const formSchema = yup.object().shape({
         title: yup.string().required("Must enter a title before searching."),
@@ -14,21 +17,7 @@ function SearchBar({ setResults }) {
             },
             validationSchema: formSchema,
             onSubmit: (values) => {
-                // POST request to SearchResults resource
-                fetch("/search_results", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(values, null, 2),
-                })
-                .then(res => {
-                    if (res.status === 200) {
-                        res.json()
-                        .then(responseSearchResults => setResults(responseSearchResults.results))
-                    }
-                })
-                .catch(error => console.error(error))
+                searchContent(values.title)
             },
         })
     
