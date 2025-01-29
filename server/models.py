@@ -1,7 +1,8 @@
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import UniqueConstraint
+from sqlalchemy import UniqueConstraint, DateTime
 from sqlalchemy.orm import validates
+from DateTime import datetime
 
 from config import db, bcrypt
 from helpers import validate_rating, validate_notes
@@ -94,6 +95,7 @@ class MovieWatchEvent(db.Model):
     rating = db.Column(db.Integer)
     notes = db.Column(db.String)
     status = db.Column(db.String, nullable=False)
+    created_at = db.Column(DateTime, default=datetime.utcnow)
 
     # Create model relationships
     user = db.relationship("User", back_populates="movie_watch_events")
@@ -126,6 +128,7 @@ class TVShowWatchEvent(db.Model):
     rating = db.Column(db.Integer)
     notes = db.Column(db.String)
     status = db.Column(db.String, nullable=False)
+    created_at = db.Column(DateTime, default=datetime.utcnow)
 
     # Create model relationships
     user = db.relationship("User", back_populates="tv_show_watch_events")
