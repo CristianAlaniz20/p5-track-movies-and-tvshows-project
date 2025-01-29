@@ -181,7 +181,7 @@ class MovieEvent(Resource):
                 return no_session_id_response()
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('before watching', 'watching', 'after watching'):
                 return invalid_status_value_response()
             else:
                 # Create a new MovieWatchEvent instance
@@ -229,7 +229,7 @@ class MovieEvent(Resource):
                 return no_watch_event_found_response("movie")
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('before watching', 'watching', 'after watching'):
                 return invalid_status_value_response()
             else:
                 # Change watch event values to new values
@@ -295,7 +295,7 @@ class TVShowEvent(Resource):
                 return no_session_id_response()
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('before watching', 'watching', 'after watching'):
                 return invalid_status_value_response()
             else:
                 # Create a new TVShowWatchEvent instance
@@ -343,7 +343,7 @@ class TVShowEvent(Resource):
                 return no_watch_event_found_response("tv show")
             elif not data:
                 return no_data_response()
-            elif status not in ('to-watch', 'watched'):
+            elif status not in ('before watching', 'watching', 'after watching'):
                 return invalid_status_value_response()
             else:
                 # Change watch event values to new values
