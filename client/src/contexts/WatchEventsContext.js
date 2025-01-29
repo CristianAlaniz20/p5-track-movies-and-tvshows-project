@@ -1,13 +1,59 @@
 import React, { createContext, useState, useContext } from 'react';
-import { UserContext } from './UserContext';
 
 export const WatchEventsContext = createContext();
 
 export const WatchEventsProvider = ({ children }) => {
-    const { user, isAuthenticated } = useContext(UserContext); // context from userContexr
+    const [watchedEvents, setWatchedEvents] = useState([]) // watched events state
+    const [watchlistEvents, setWatchlistEvents] = useState([]) // watchlist events state
     const [watchEvents, setWatchEvents] = useState([]); // watch events state
 
-    const fetchWatchEvents = async () => {
+    const retrieveMovieEvents = (movie) => {
+        if (Array.isArray(movie.movie_watch_events)) {
+            // reset watchEvents and watchlistEvents
+            setWatchedEvents([])
+            setWatchlistEvents([])
+
+            movie.movie_watch_events.forEach(event => {
+                // add events with a status of 'watched' to watchedEvents
+                if (event.status === "watched") {
+                    setWatchedEvents(prevEvents => [...prevEvents, event])
+                // add events with a status of 'watchlist' to watchlistEvents
+                } else if (event.status === "watchlist") {
+                    setWatchlistEvents(prevEvents => [...prevEvents, event])
+                // handle any exceptions
+                } else {
+                    console.warn("event status is invalid", event)
+                }
+            });
+        } else {
+            console.warn("movie_watch_events is not an array or is undefined", movie);
+        }
+    }
+
+    const retrieveTVShowsEvents = (show) => {
+        if (Array.isArray(show.tv_show_watch_events)) {
+            // reset watchEvents and watchlistEvents
+            setWatchEvents([])
+            setWatchEvents([])
+
+            show.tv_show_watch_events.forEach(event => {
+                // add events with a status of 'watched' to watchedEvents
+                if (event.status === "watched") {
+                    setWatchedEvents(prevEvents => [...prevEvents, event])
+                // add events with a status of 'watchlist' to watchlistEvents
+                }  else if (event.status === "watchlist") {
+                    setWatchlistEvents(prevEvents => [...prevEvents, event])
+                // handle any exceptions
+                } else {
+                    console.warn("event status is invalid", event)
+                }
+            });
+        } else {
+            console.warn("tv_show_watch_events is not an array or is undefined", show);
+        }
+    }
+
+    /*const fetchWatchEvents = async () => {
         if (isAuthenticated && user) {
             try {
                 // retrieve and add movieEvents and tvShowEvents to watchEvents state
@@ -22,7 +68,7 @@ export const WatchEventsProvider = ({ children }) => {
                 console.error("Failed to fetch watch events", error);
             }
         }
-    };
+    };*/
 
     const addMovieEvent = async (movieId, rating, notes, status) => {
         try {
@@ -97,8 +143,12 @@ export const WatchEventsProvider = ({ children }) => {
 
     return (
         <WatchEventsContext.Provider value={{
-            watchEvents,
-            fetchWatchEvents,
+            watchedEvents,
+            watchlistEvents,
+            retrieveMovieEvents,
+            retrieveTVShowsEvents,
+            //watchEvents,
+            //fetchWatchEvents,
             addMovieEvent,
             addTVShowEvent,
             updateMovieEvent: (id, data) => updateEvent('/movie_event', id, data),
