@@ -3,9 +3,9 @@ import React, { createContext, useState } from 'react';
 export const ContentContext = createContext();
 
 export const ContentProvider = ({ children }) => {
-    //const [movies, setMovies] = useState([]); // movies state
-    //const [tvShows, setTvShows] = useState([]); // tv shows state
     const [searchResults, setSearchResults] = useState([]); // search results state
+    const [currentMovie, setCurrentMovie] = useState({}); // current movie state
+    const [currentTVShow, setCurrentTVShow] = useState({}); // current tv show state
 
     const searchContent = async (title) => {
         try {
@@ -25,38 +25,14 @@ export const ContentProvider = ({ children }) => {
         }
     };
 
-    /*const fetchMovies = async () => {
-        try {
-            const response = await fetch('/movie');
-            if (response.ok) {
-                const data = await response.json();
-                setMovies(data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch movies", error);
-        }
-    };
-
-    const fetchTVShows = async () => {
-        try {
-            const response = await fetch('/tv_show');
-            if (response.ok) {
-                const data = await response.json();
-                setTvShows(data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch TV shows", error);
-        }
-    };*/
-
     return (
         <ContentContext.Provider value={{
-            //movies,
-            //tvShows,
             searchResults,
             searchContent,
-            //fetchMovies,
-            //fetchTVShows,
+            currentMovie,
+            currentTVShow,
+            setCurrentMovie,
+            setCurrentTVShow,
         }}>
             {children}
         </ContentContext.Provider>
