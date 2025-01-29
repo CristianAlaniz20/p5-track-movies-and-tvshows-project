@@ -32,8 +32,8 @@ function App() {
             <Route exact path="/" component={UserDashboard} />
             <Route path="/create_movie" component={CreateMoviePage} />
             <Route path="/create_tv_show" component={CreateTVShowPage} />
-            <Route path="/movie/:movie_id" component={MovieDetails} />
-            <Route path="/tv_show/:tv_show_id" component={TVShowDetails} />
+            <Route path="/movie_details" component={MovieDetails} />
+            <Route path="/tv_show_details" component={TVShowDetails} />
             <Route path="/add_to_movie_list/:movie_id" component={CreateMovieWatchEvent} />
             <Route path="/add_to_tv_show_list/:tv_show_id" component={CreateTVShowWatchEvent} />
           </Switch>
