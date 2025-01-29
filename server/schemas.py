@@ -14,25 +14,6 @@ class TVShowSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = User
-        include_relationships = True
-        load_instance = True
-
-    movies = fields.Method("get_unique_movies")
-    tv_shows = fields.Method("get_unique_tv_shows")
-
-    def get_unique_movies(self, obj):
-        items = getattr(obj, "movies", [])
-        unique_items = list({item.id: item for item in items}.values())
-        return MovieSchema(many=True).dump(unique_items)
-
-    def get_unique_tv_shows(self, obj):
-        items = getattr(obj, "tv_shows", [])
-        unique_items = list({item.id: item for item in items}.values())
-        return TVShowSchema(many=True).dump(unique_items)
-
 class MovieWatchEventSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = MovieWatchEvent
@@ -44,3 +25,26 @@ class TVShowWatchEventSchema(ma.SQLAlchemyAutoSchema):
         model = TVShowWatchEvent
         include_relationships = True
         load_instance = True
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        include_relationships = True
+        load_instance = True
+
+    movies = fields.Method("get_unique_movies")
+    tv_shows = fields.Method("get_unique_tv_shows")
+    
+    # Define watch_events to handle a list of WatchEvent objects
+    movie_watch_events = fields.List(fields.Nested(MovieWatchEventSchema), default=list)
+    tv_show_watch_events = fields.List(fields.Nested(TVShowWatchEventSchema), default=list)
+
+    def get_unique_movies(self, obj):
+        items = getattr(obj, "movies", [])
+        unique_items = list({item.id: item for item in items}.values())
+        return MovieSchema(many=True).dump(unique_items)
+
+    def get_unique_tv_shows(self, obj):
+        items = getattr(obj, "tv_shows", [])
+        unique_items = list({item.id: item for item in items}.values())
+        return TVShowSchema(many=True).dump(unique_items)
