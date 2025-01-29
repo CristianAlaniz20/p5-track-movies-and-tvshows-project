@@ -530,12 +530,12 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(SearchResults, '/search_results', endpoint='search_results')
-api.add_resource(MovieEvent, '/movie_event/<int:movie_id>', endpoint='movie_event')
-api.add_resource(TVShowEvent, '/tv_show_event/<int:tv_show_id>', endpoint='tv_show_event')
-api.add_resource(MovieResource, '/movie/<int:movie_id>', endpoint='movie')
-api.add_resource(MovieResource, '/movie', endpoint='create_movie')
-api.add_resource(TVShowResource, '/tv_show/<int:tv_show_id>', endpoint='tv_show')
-api.add_resource(TVShowResource, '/tv_show', endpoint='create_tv_show')
+api.add_resource(MovieResource, '/movies', endpoint='movies')
+api.add_resource(MovieResource, '/movies/<int:movie_id>', endpoint='movie')
+api.add_resource(TVShowResource, '/tv_shows', endpoint='tv_shows')
+api.add_resource(TVShowResource, '/tv_shows/<int:tv_show_id>', endpoint='tv_show')
+api.add_resource(MovieEvent, '/movies/<int:movie_id>/events', endpoint='movie_events')
+api.add_resource(TVShowEvent, '/tv_shows/<int:tv_show_id>/events', endpoint='tv_show_events')
 
 
 if __name__ == '__main__':
