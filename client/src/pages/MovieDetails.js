@@ -1,40 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
 import { convertMinutesToHoursAndMinutes } from "../helpers";
 import ContentDetails from "../components/ContentDetails";
+import { ContentContext } from "../contexts/ContentContext";
+import { WatchEventsContext } from "../contexts/WatchEventsContext";
+import ListWatchEvents from "../components/ListWatchEvents";
 
 function MovieDetails() {
-    const { movie_id } = useParams() // Access the movie_id from the route
-    const history = useHistory() // re routes
-    const [movie, setMovie]  = useState(null) // movie state
+    const { currentMovie } = useContext(ContentContext) // currentMovie state from ContentContext)
+    // states and method from WatchEventsContext
+    const { watchedEvents, watchlistEvents, retrieveMovieEvents } = useContext(WatchEventsContext)
+
+    // empty watch event list messsage
+    const emptyWatchEventListMessage = "No watch events found for this list."
 
     useEffect(() => {
-        // GET request to backend MovieResource
-        fetch(`/movie/${movie_id}`)
-        .then(res => {
-            if (res.status === 200) {
-                return res.json()
-            } else {
-                console.log("Error fetching movie")
-            }
-        })
-        .then(resMovie => setMovie(resMovie.movie))
-        .catch(error => console.error(error))
-    }, [movie_id])
-
-    // re routes to CreateMovieWatchEvent component
-    const handleAddToWatchlistClick = () => history.push(`/add_to_movie_list/${movie.id}`)
+        // retrieve movie events until currentMovie has a value
+        if (currentMovie) {
+            retrieveMovieEvents(currentMovie)
+        }
+    }, [currentMovie])
 
     return (
         <div>
-            {/* conditionally render movie details after movie response */}
-            {movie ? (
+            {/* conditionally render movie details */}
+            {currentMovie && watchedEvents && watchlistEvents ? (
                 <>
-                    <ContentDetails 
-                        contentObj={movie}
-                        jsx={<p>Duration: {convertMinutesToHoursAndMinutes(movie.duration)}</p>}
-                    />
-                    <button onClick={handleAddToWatchlistClick} >Add To Watchlist</button>
+                    {/* Displays content details */}
+                    <div>
+                        <ContentDetails 
+                            contentObj={currentMovie}
+                            jsx={<p>Duration: {convertMinutesToHoursAndMinutes(currentMovie.duration)}</p>}
+                        />
+                    </div>
+                    {/* Displays watched events */}
+                    <div>
+                        <h2>Watched Events</h2>
+                        <ListWatchEvents eventsList={watchedEvents} emptyWatchEventListMessage={emptyWatchEventListMessage} />
+                    </div>
+                    {/* Displays watched events */}
+                    <div>
+                        <h2>Watchlist Events</h2>
+                        <ListWatchEvents eventsList={watchlistEvents} emptyWatchEventListMessage={emptyWatchEventListMessage} />
+                    </div>
                 </>
             ) : (
                 <h1>Movie is loading...</h1>
