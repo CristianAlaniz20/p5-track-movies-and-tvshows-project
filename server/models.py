@@ -1,6 +1,6 @@
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import UniqueConstraint, DateTime
+from sqlalchemy import DateTime
 from sqlalchemy.orm import validates
 from datetime import datetime
 
@@ -102,9 +102,6 @@ class MovieWatchEvent(db.Model):
 
     movie = db.relationship("Movie", back_populates="movie_watch_events")
 
-    # Constraint to ensure no duplicate instances of user_id and trail_id pairs
-    __table_args__ = (UniqueConstraint('user_id', 'movie_id', name='no_duplicate_user_and_movie_instance'),)
-
     # Column validations
     @validates('rating')
     def validates_rating(self, key, value):
@@ -134,9 +131,6 @@ class TVShowWatchEvent(db.Model):
     user = db.relationship("User", back_populates="tv_show_watch_events")
 
     tv_show = db.relationship("TVShow", back_populates="tv_show_watch_events")
-
-    # Constraint to ensure no duplicate instances of user_id and trail_id pairs
-    __table_args__ = (UniqueConstraint('user_id', 'tv_show_id', name='no_duplicate_user_and_tv_show_instance'),)
 
     # Column validations
     @validates('rating')
