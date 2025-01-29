@@ -2,18 +2,6 @@ from config import ma
 from models import User, Movie, TVShow, MovieWatchEvent, TVShowWatchEvent
 from marshmallow import fields
 
-class MovieSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Movie
-        include_relationships = True
-        load_instance = True
-
-class TVShowSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = TVShow
-        include_relationships = True
-        load_instance = True
-
 class MovieWatchEventSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = MovieWatchEvent
@@ -25,6 +13,23 @@ class TVShowWatchEventSchema(ma.SQLAlchemyAutoSchema):
         model = TVShowWatchEvent
         include_relationships = True
         load_instance = True
+
+class MovieSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Movie
+        include_relationships = True
+        load_instance = True
+
+    movie_watch_events = fields.List(fields.Nested(MovieWatchEventSchema), default=list)
+
+class TVShowSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = TVShow
+        include_relationships = True
+        load_instance = True
+
+    tv_show_watch_events = fields.List(fields.Nested(TVShowWatchEventSchema), default=list)
+
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
