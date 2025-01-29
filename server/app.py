@@ -283,7 +283,7 @@ class TVShowEvent(Resource):
             notes = data['notes']
             status = data['status']
             
-            elif not tv_show_id:
+            if not tv_show_id:
                 return no_url_id_response("tv show")
             elif not session['user_id']:
                 return no_session_id_response()
