@@ -4,7 +4,7 @@ import * as yup from "yup"
 import { UserContext } from "../contexts/UserContext";
 
 function LoginForm() {
-    const { setUser } = useContext(UserContext) 
+    const { login } = useContext(UserContext) 
 
     // login form schema validation
     const formSchema = yup.object().shape({
@@ -18,24 +18,7 @@ function LoginForm() {
             password: ""
         },
         validationSchema: formSchema,
-        onSubmit: (values) => {
-            // POST request to Login resource
-            fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values, null, 2),
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    return res.json()
-                    // get setUser from Redux context
-                }
-            })
-            .then(response => setUser(response.user))
-            .catch(error => console.error(error))
-        },
+        onSubmit: (values) => login(values.username, values.password)
     })
         
     return (
