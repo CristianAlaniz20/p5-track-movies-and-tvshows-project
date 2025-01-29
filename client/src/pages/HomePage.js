@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
+import { ContentContext } from "../contexts/ContentContext";
 
 function HomePage() {
-    // search results state
-    const [results, setResults] = useState(null)
-    // filter selection state
-    const [filter, setFilter] = useState("all")
+    const { searchResults } = useContext(ContentContext) // searchResults state from ContentContext
+    const [filter, setFilter] = useState("all") // filter selection state
 
     // sets the filter every time a different option is selected
     function handleSelectChange(event) {
@@ -14,7 +13,7 @@ function HomePage() {
     }
 
     // filters the results 
-    const filteredResults = results ? results.filter(result => {
+    const filteredResults = searchResults ? searchResults.filter(result => {
         switch (filter) {
             case "movies":
                 return !!result.duration
@@ -27,7 +26,7 @@ function HomePage() {
 
     return (
         <div>
-            <SearchBar setResults={setResults} />
+            <SearchBar />
             {/* dropdown for filtration */}
             <label htmlFor="search-filter">Filter: </label>
             <select name="search-filter" value={filter} onChange={handleSelectChange}>
@@ -36,7 +35,7 @@ function HomePage() {
                 <option value="tv shows">tv shows</option>
             </select>
             {/* Checks if anything has been searched */}
-            {results ? (
+            {searchResults ? (
                 <SearchResults results={filteredResults} />
             ) : (
                 <h4>Search for any show you desire!</h4>
