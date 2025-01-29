@@ -11,15 +11,11 @@ import TVShowDetails from "../pages/TVShowDetails";
 import CreateMovieWatchEvent from "./CreateMovieWatchEvent";
 import CreateTVShowWatchEvent from "./CreateTVShowWatchEvent";
 import { UserContext } from "../contexts/UserContext";
+import UserDashboard from "../pages/UserDashboard";
 
 
 function App() {
-  const { user, isAuthenticated } = useContext(UserContext) // user and isAuthenticated states from UserContext
-  /*if (user) {
-    console.log(user)
-    console.log(user.movies)
-    console.log(user.tv_shows)
-  }*/
+  const { isAuthenticated } = useContext(UserContext) // user and isAuthenticated states from UserContext
 
   // route to login page if user isn't logged in
   if (!isAuthenticated) {
@@ -33,7 +29,7 @@ function App() {
           <NavBar />
           <br />
           <Switch>
-            <Route exact path="/" component={HomePage} />
+            <Route exact path="/" component={UserDashboard} />
             <Route path="/create_movie" component={CreateMoviePage} />
             <Route path="/create_tv_show" component={CreateTVShowPage} />
             <Route path="/movie/:movie_id" component={MovieDetails} />
