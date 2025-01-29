@@ -3,18 +3,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 
 function NavBar() {
-    const { setUser } = useContext(UserContext) // setter function for user state
-
-    function handleLogoutClick() {
-        // DELETE request to Logout Resource
-        fetch("/logout", { method: "DELETE" })
-        .then(res => {
-            if (res.status === 200) {
-                setUser(null)
-            }
-        })
-        .catch(error => console.error(error))
-    }
+    const { logout } = useContext(UserContext) // logout function from UserContext
 
     // NavBar CSS styling
     const NavBarStyling = {
@@ -35,7 +24,7 @@ function NavBar() {
                 <button>Create TV Show</button>
             </Link>
 
-            <button onClick={handleLogoutClick} >Logout</button>
+            <button onClick={() => logout()} >Logout</button>
         </nav>
     )
 }
