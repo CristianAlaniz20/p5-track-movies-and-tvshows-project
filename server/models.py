@@ -2,7 +2,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import UniqueConstraint, DateTime
 from sqlalchemy.orm import validates
-from DateTime import datetime
+from datetime import datetime
 
 from config import db, bcrypt
 from helpers import validate_rating, validate_notes
