@@ -56,7 +56,6 @@ class Movie(db.Model):
     description = db.Column(db.String, nullable=False)
     release_date = db.Column(db.String, nullable=False)
     streaming_options = db.Column(db.String, nullable=False)
-    status = db.Column(db.String, nullable=False, default="discoverable")
 
     # Create model relationships
     movie_watch_events = db.relationship("MovieWatchEvent", back_populates="movie", cascade="all, delete-orphan")
@@ -77,7 +76,6 @@ class TVShow(db.Model):
     description = db.Column(db.String, nullable=False)
     release_date = db.Column(db.String, nullable=False)
     streaming_options = db.Column(db.String, nullable=False)
-    status = db.Column(db.String, nullable=False, default="discoverable")
 
     # Create model relationships
     tv_show_watch_events = db.relationship("TVShowWatchEvent", back_populates="tv_show", cascade="all, delete-orphan")
