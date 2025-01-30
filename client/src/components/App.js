@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
-import HomePage from "../pages/HomePage";
+import SearchDatabase from "../pages/SearchDatabase";
 import Header from "./Header";
 import CreateMoviePage from "../pages/CreateMoviePage";
 import CreateTVShowPage from "../pages/CreateTVShowPage";
@@ -30,12 +30,13 @@ function App() {
           <br />
           <Switch>
             <Route exact path="/" component={UserDashboard} />
-            <Route path="/create_movie" component={CreateMoviePage} />
-            <Route path="/create_tv_show" component={CreateTVShowPage} />
-            <Route path="/movie_details" component={MovieDetails} />
-            <Route path="/tv_show_details" component={TVShowDetails} />
-            <Route path="/add_to_movie_list/:movie_id" component={CreateMovieWatchEvent} />
-            <Route path="/add_to_tv_show_list/:tv_show_id" component={CreateTVShowWatchEvent} />
+            <Route path="/search_database" component={SearchDatabase} />
+            <Route path="/movies/new" component={CreateMoviePage} />
+            <Route path="/movies/:movie_id" component={MovieDetails} />
+            <Route path="/tv_shows/new" component={CreateTVShowPage} />
+            <Route path="/tv_shows/:tv_show_id" component={TVShowDetails} />
+            <Route path="/movies/:movie_id/events/new" component={CreateMovieWatchEvent} />
+            <Route path="/tv_shows/:tv_show_id/events/new" component={CreateTVShowWatchEvent} />
           </Switch>
         </div>
     </Router>
