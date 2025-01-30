@@ -8,8 +8,8 @@ import CreateTVShowPage from "../pages/CreateTVShowPage";
 import NavBar from "./NavBar";
 import MovieDetails from "../pages/MovieDetails";
 import TVShowDetails from "../pages/TVShowDetails";
-import CreateMovieWatchEvent from "./CreateMovieWatchEvent";
-import CreateTVShowWatchEvent from "./CreateTVShowWatchEvent";
+import MovieWatchEventForm from "./MovieWatchEventForm";
+import TVShowWatchEventForm from "./TVShowWatchEventForm";
 import { UserContext } from "../contexts/UserContext";
 import UserDashboard from "../pages/UserDashboard";
 
@@ -35,8 +35,8 @@ function App() {
             <Route exact path="/movies/:movie_id" component={MovieDetails} />
             <Route exact path="/tv_shows/new" component={CreateTVShowPage} />
             <Route exact path="/tv_shows/:tv_show_id" component={TVShowDetails} />
-            <Route exact path="/movies/:movie_id/events/new" component={CreateMovieWatchEvent} />
-            <Route exact path="/tv_shows/:tv_show_id/events/new" component={CreateTVShowWatchEvent} />
+            <Route exact path="/movies/:movie_id/events/new" component={MovieWatchEventForm} />
+            <Route exact path="/tv_shows/:tv_show_id/events/new" component={TVShowWatchEventForm} />
           </Switch>
         </div>
     </Router>
