@@ -31,7 +31,7 @@ function CreateMoviePage() {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // POST request to MovieResource
-            fetch("/movie", {
+            fetch("/movies", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
