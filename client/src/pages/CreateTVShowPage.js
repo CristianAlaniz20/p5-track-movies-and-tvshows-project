@@ -31,7 +31,7 @@ function CreateTVShowPage() {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // POST request to tv show resource
-            fetch("/tv_show", {
+            fetch("/tv_shows", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
