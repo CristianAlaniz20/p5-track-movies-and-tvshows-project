@@ -10,7 +10,7 @@ function ListTVShows({ tvShowList, emptyContentListMessage }) {
     // handle tv show poster being clicked
     const handleTVShowContentClick = (show) => {
         setCurrentTVShow(show)
-        history.push("/tv_show_details")
+        history.push(`/tv_shows/${show.id}`)
     }
 
     return (
