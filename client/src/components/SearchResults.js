@@ -6,9 +6,9 @@ function SearchResults({ results }) {
     const history = useHistory()
 
     // reroute to createMoviePage component
-    const handleCreateMovieClick = () => history.push('/create_movie')
+    const handleCreateMovieClick = () => history.push('/movies/new')
     // reroute to createTVShowPage component
-    const handleCreateTVShowClick = () => history.push('/create_tv_show')
+    const handleCreateTVShowClick = () => history.push('/tv_shows/new')
 
     return (
         <div>
