@@ -30,13 +30,13 @@ function App() {
           <br />
           <Switch>
             <Route exact path="/" component={UserDashboard} />
-            <Route path="/search_database" component={SearchDatabase} />
-            <Route path="/movies/new" component={CreateMoviePage} />
-            <Route path="/movies/:movie_id" component={MovieDetails} />
-            <Route path="/tv_shows/new" component={CreateTVShowPage} />
-            <Route path="/tv_shows/:tv_show_id" component={TVShowDetails} />
-            <Route path="/movies/:movie_id/events/new" component={CreateMovieWatchEvent} />
-            <Route path="/tv_shows/:tv_show_id/events/new" component={CreateTVShowWatchEvent} />
+            <Route exact path="/search_database" component={SearchDatabase} />
+            <Route exact path="/movies/new" component={CreateMoviePage} />
+            <Route exact path="/movies/:movie_id" component={MovieDetails} />
+            <Route exact path="/tv_shows/new" component={CreateTVShowPage} />
+            <Route exact path="/tv_shows/:tv_show_id" component={TVShowDetails} />
+            <Route exact path="/movies/:movie_id/events/new" component={CreateMovieWatchEvent} />
+            <Route exact path="/tv_shows/:tv_show_id/events/new" component={CreateTVShowWatchEvent} />
           </Switch>
         </div>
     </Router>
