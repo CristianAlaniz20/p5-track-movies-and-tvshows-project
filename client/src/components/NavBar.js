@@ -17,10 +17,10 @@ function NavBar() {
             <Link to="/">
                 <button>Home</button>
             </Link>
-            <Link to='/create_movie' >
+            <Link to='/movies/new' >
                 <button>Create Movie</button>
             </Link>
-            <Link to='/create_tv_show' >
+            <Link to='/tv_shows/new' >
                 <button>Create TV Show</button>
             </Link>
 
