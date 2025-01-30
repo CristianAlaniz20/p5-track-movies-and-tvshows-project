@@ -10,8 +10,8 @@ function TVShowDetails() {
     const { tv_show_id } = useParams(); // tv_show_id url parameter
     const { currentTVShow, setCurrentTVShow } = useContext(ContentContext) // currentMovie state from ContentContext)
     const { user } = useContext(UserContext); // user state from UserContext
-    // states and method from WatchEventsContext
-    const { watchedEvents, watchlistEvents, retrieveTVShowEvents } = useContext(WatchEventsContext)
+    // states and method from WatchEventsContext 
+    const { watchedEvents, watchlistEvents, retrieveTVShowsEvents } = useContext(WatchEventsContext)
 
      useEffect(() => {
             // handle page refresh
@@ -38,7 +38,7 @@ function TVShowDetails() {
     useEffect(() => {
         // retrieve tv show events until currentTVShow has a value
         if (currentTVShow) {
-            retrieveTVShowEvents(currentTVShow)
+            retrieveTVShowsEvents(currentTVShow)
         }
     }, [currentTVShow])
 
