@@ -10,7 +10,7 @@ function ListMovies({ movieList, emptyContentListMessage }) {
     // handle movie poster being clicked
     const handleMovieContentClick = (movie) => {
         setCurrentMovie(movie)
-        history.push("/movie_details")
+        history.push(`/movies/${movie.id}`)
     }
 
     return (
