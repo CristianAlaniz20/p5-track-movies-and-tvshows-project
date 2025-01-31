@@ -25,7 +25,7 @@ function ListTVShows({ tvShowList }) {
                     key={show.id} 
                     src={show.poster_url} 
                     alt={`${show.title} poster`} 
-                    onClick={() => handleMovieContentClick(show)} 
+                    onClick={() => handleTVShowContentClick(show)} 
                     style={{ cursor: "pointer" }}
                 />
             ))
