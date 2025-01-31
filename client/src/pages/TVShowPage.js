@@ -6,7 +6,7 @@ import { WatchEventsContext } from "../contexts/WatchEventsContext";
 import ListWatchEvents from "../components/ListWatchEvents";
 import { UserContext } from "../contexts/UserContext";
 //import { useWatchEventContext } from "../contexts/DummyWatchedContext";
-function TVShowDetails() {
+function TVShowPage() {
     // Contexts
     const { user } = useContext(UserContext)
     const { watchedEvents, watchlistEvents } = useContext(WatchEventsContext) 
@@ -66,4 +66,4 @@ function TVShowDetails() {
     )
 }
 
-export default TVShowDetails
+export default TVShowPage
