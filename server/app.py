@@ -261,9 +261,9 @@ class MovieEvent(Resource):
         except Exception as e:
             return error_response(e)
 
-    def delete(self, movie_id):
+    def delete(self, movie_id, event_id):
         try:
-            existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
+            existing_movie_watch_event = MovieWatchEvent.query.filter_by(id=event_id).first()
 
             if not movie_id:
                 return no_url_id_response("movie")
@@ -271,13 +271,21 @@ class MovieEvent(Resource):
                 return no_session_id_response()
             elif not existing_movie_watch_event:
                 return no_watch_event_found_response("movie")
+            elif not existing_movie_watch_event.user_id == session['user_id']:
+                return existing_watch_event_not_matching_session_id_response("movie")
+            elif not existing_movie_watch_event.tv_show_id == movie_id:
+                return existing_watch_event_not_matching_content_id_response("movie")
             else:
                 # Delete existing movie watch event and Commit change to db
                 db.session.delete(existing_movie_watch_event)
                 db.session.commit()
 
                 # Create response
-                return make_response(jsonify({"message" : "movie watch event deleted."}), 200)
+                response = {
+                    "message" : "movie watch event deleted.",
+                    "watch_event" : movie_watch_event_schema.dump(existing_movie_watch_event)
+                }
+                return make_response(jsonify(response), 200)
 
         # All other exceptions
         except Exception as e:
