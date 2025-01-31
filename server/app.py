@@ -27,7 +27,9 @@ from helpers import (
     no_session_id_response, 
     invalid_status_value_response, 
     no_watch_event_found_response, 
-    no_url_id_response
+    no_url_id_response,
+    existing_watch_event_not_matching_session_id_response,
+    existing_watch_event_not_matching_content_id_response
 )
 
 # Views go here!
@@ -321,20 +323,26 @@ class TVShowEvent(Resource):
         except Exception as e:
             return error_response(e)
 
-    def put(self, tv_show_id):
+    def put(self, tv_show_id, event_id):
         try:
             data = request.get_json()
             rating = data['rating']
             notes = data['notes']
             status = data['status']
-            existing_tv_show_watch_event = TVShowWatchEvent.query.filter(TVShowWatchEvent.user_id == session['user_id'], TVShowWatchEvent.tv_show_id == tv_show_id).first()
+            existing_tv_show_watch_event = TVShowWatchEvent.query.filter_by(id=event_id).first()
 
             if not tv_show_id:
                 return no_url_id_response("tv show")
+            if not event_id:
+                return no_url_id_response("event")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not existing_tv_show_watch_event:
                 return no_watch_event_found_response("tv show")
+            elif not existing_tv_show_watch_event.user_id == session['user_id']:
+                return existing_watch_event_not_matching_session_id_response("tv show")
+            elif not existing_tv_show_watch_event.tv_show_id == tv_show_id:
+                return existing_watch_event_not_matching_content_id_response("tv show")
             elif not data:
                 return no_data_response()
             elif status not in ('watchlist', 'watched'):
