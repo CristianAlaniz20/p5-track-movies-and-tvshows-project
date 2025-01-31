@@ -23,10 +23,15 @@ export const ContentProvider = ({ children }) => {
         }
     };
 
+    const checkTypeAndSetContent = (contentObj) => {
+        console.log(contentObj);
+        setCurrentContent(contentObj);
+        return contentObj.movie_watch_events || contentObj.tv_show_watch_events;
+    };
+
     return (
-        <ContentContext.Provider value={{ searchResults, searchContent, currentContent, setCurrentContent }}>
+        <ContentContext.Provider value={{ searchResults, searchContent, currentContent, setCurrentContent, checkTypeAndSetContent }}>
             {children}
         </ContentContext.Provider>
     );
 };
-
