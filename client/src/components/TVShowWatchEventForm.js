@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import DisplayErrors from "./DisplayErrors";
 import { WatchEventsContext } from "../contexts/WatchEventsContext";
 
 function TVShowWatchEventForm() {
-    const { tv_show_id } = useParams()
     const { addTVShowEvent, updateTVShowEvent } = useContext(WatchEventsContext) // add and update watch events functions
     const location = useLocation(); 
     const event = location.state?.event || null; // Get event from navigation state
@@ -27,7 +26,7 @@ function TVShowWatchEventForm() {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // conditionally render a callback function
-            event ? updateTVShowEvent(event.tv_show, values) : addTVShowEvent(tv_show_id, values.rating, values.notes, values.status)
+            event ? updateTVShowEvent(event.tv_show, values) : addTVShowEvent(event.tv_show, values)
         }
     })
 
