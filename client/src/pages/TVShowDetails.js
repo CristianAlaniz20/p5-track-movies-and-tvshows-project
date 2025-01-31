@@ -45,10 +45,7 @@ function TVShowDetails() {
                 <>
                     {/* Displays content details */}
                     <div>
-                        <ContentDetails 
-                            contentObj={currentContent}
-                            jsx={<p>Seasons: {currentContent.seasons}</p>}
-                        />
+                        <ContentDetails />
                     </div>
                     <button onClick={handleCreateWatchEventClick} >Create Watch Event</button>
                     {/* Displays watched events */}
