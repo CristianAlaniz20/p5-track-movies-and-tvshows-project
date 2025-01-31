@@ -212,20 +212,26 @@ class MovieEvent(Resource):
         except Exception as e:
             return error_response(e)
 
-    def put(self, movie_id):
+    def put(self, movie_id, event_id):
         try:
             data = request.get_json()
             rating = data['rating']
             notes = data['notes']
             status = data['status']
-            existing_movie_watch_event = MovieWatchEvent.query.filter(MovieWatchEvent.user_id == session['user_id'], MovieWatchEvent.movie_id == movie_id).first()
+            existing_movie_watch_event = MovieWatchEvent.query.filter_by(id=event_id).first()
 
             if not movie_id:
                 return no_url_id_response("movie")
+            elif not event_id:
+                return no_url_id_response("event")
             elif not session['user_id']:
                 return no_session_id_response()
             elif not existing_movie_watch_event:
                 return no_watch_event_found_response("movie")
+            elif not existing_movie_watch_event.user_id == session['user_id']:
+                return existing_watch_event_not_matching_session_id_response("movie")
+            elif not existing_movie_watch_event.tv_show_id == movie_id:
+                return existing_watch_event_not_matching_content_id_response("movie")
             elif not data:
                 return no_data_response()
             elif status not in ('watchlist', 'watched'):
@@ -333,7 +339,7 @@ class TVShowEvent(Resource):
 
             if not tv_show_id:
                 return no_url_id_response("tv show")
-            if not event_id:
+            elif not event_id:
                 return no_url_id_response("event")
             elif not session['user_id']:
                 return no_session_id_response()
@@ -378,7 +384,7 @@ class TVShowEvent(Resource):
 
             if not tv_show_id:
                 return no_url_id_response("tv show")
-            if not event_id:
+            elif not event_id:
                 return no_url_id_response("event")
             elif not session['user_id']:
                 return no_session_id_response()
