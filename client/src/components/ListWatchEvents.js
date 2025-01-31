@@ -12,6 +12,14 @@ function ListWatchEvents({ eventsList=[] }) {
         });
     };
 
+    // re route to confirm deletion page
+    const handleDeleteButtonClick = (event) => {
+        history.push({ 
+            pathname: event.movie ? `/movies/${event.movie}/events/${event.id}/delete` : `/tv_shows/${event.tv_show}/events/${event.id}/delete`,
+            state: { event },
+        }
+    )}
+
     return (
         <div>
             {eventsList.length > 0 ? eventsList.map(event => {
@@ -22,6 +30,7 @@ function ListWatchEvents({ eventsList=[] }) {
                         <p>Your Notes: {event.notes}</p>
 
                         <button onClick={() => handleEditButtonClick(event)} >Edit</button>
+                        <button onClick={() => handleDeleteButtonClick(event)} >Delete</button>
                     </div>
                 )
             }) : <p>No watch events found for this list.</p>}
