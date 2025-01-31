@@ -5,6 +5,8 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null); // user state
     const [isAuthenticated, setIsAuthenticated] = useState(false); // isAuthenticated state
+    const [userMovieWatchEvents, setUserMovieWatchEvents] = useState([])
+    const [userTVShowWatchEvents, setUserTVShowWatchEvents] = useState([])
     const [userMovies, setUserMovies] = useState([])
     const [userTVShows, setUserTVShows] = useState([])
     console.log(user)
@@ -33,12 +35,16 @@ export const UserProvider = ({ children }) => {
         checkSession();
     }, []);
 
-    // Update userMovies and userTVShows when user changes
+    // Update userMovies,userTVShows when user changes
     useEffect(() => {
         if (user) {
+            setUserMovieWatchEvents(user.movie_watch_events || [])
+            setUserTVShowWatchEvents(user.tv_show_watch_events || [])
             setUserMovies(user.movies || []);
             setUserTVShows(user.tv_shows || []);
         } else {
+            setUserMovieWatchEvents([]);
+            setUserTVShowWatchEvents([]);
             setUserMovies([]);
             setUserTVShows([]);
         }
@@ -93,6 +99,10 @@ export const UserProvider = ({ children }) => {
             userTVShows,
             setUserMovies,
             setUserTVShows,
+            userMovieWatchEvents,
+            userTVShowWatchEvents,
+            setUserMovieWatchEvents,
+            setUserTVShowWatchEvents,
         }}>
             {children}
         </UserContext.Provider>
