@@ -69,20 +69,62 @@ export const WatchEventsProvider = ({ children }) => {
         }
     };
 
-    const updateEvent = async (url, id, data) => {
+    const updateMovieEvent = async (movieId, values, eventId) => {
         try {
             // update a watchEvent (for movie and tv show Events)
-            const response = await fetch(`${url}/${id}`, {
+            const response = await fetch(`/movies/${movieId}/events/${eventId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                body: JSON.stringify(values),
             });
 
             if (response.ok) {
                 const updatedEvent = await response.json();
-                setWatchEvents(watchEvents.map(event =>
-                    event.id === id ? updatedEvent.watch_event : event
-                ));
+
+                // Update userMovieWatchEvents state
+                setUserMovieWatchEvents(prevEvents =>
+                    prevEvents.map(event => 
+                        event.id === updatedEvent.id ? updatedEvent : event
+                    )
+                );
+
+                // Update watchEvents state
+                setWatchEvents(prevEvents =>
+                    prevEvents.map(event =>
+                        event.id === updatedEvent.id ? updatedEvent : event
+                    )
+                );
+            }
+        } catch (error) {
+            console.error("Failed to update event", error);
+        }
+    };
+
+    const updateTVShowEvent = async (tvShowId, values, eventId) => {
+        try {
+            // update a watchEvent (for movie and tv show Events)
+            const response = await fetch(`/tv_shows/${tvShowId}/events/${eventId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+            });
+
+            if (response.ok) {
+                const updatedEvent = await response.json();
+                
+                // Update userTVShowWatchEvents state
+                setUserTVShowWatchEvents(prevEvents =>
+                    prevEvents.map(event => 
+                        event.id === updatedEvent.id ? updatedEvent : event
+                    )
+                );
+
+                // Update watchEvents state
+                setWatchEvents(prevEvents =>
+                    prevEvents.map(event =>
+                        event.id === updatedEvent.id ? updatedEvent : event
+                    )
+                );
             }
         } catch (error) {
             console.error("Failed to update event", error);
@@ -112,8 +154,8 @@ export const WatchEventsProvider = ({ children }) => {
             setWatchEvents,
             addMovieEvent,
             addTVShowEvent,
-            updateMovieEvent: (id, data) => updateEvent('/movie_event', id, data),
-            updateTVShowEvent: (id, data) => updateEvent('/tv_show_event', id, data),
+            updateMovieEvent,
+            updateTVShowEvent,
             deleteMovieEvent: (id) => deleteEvent('/movie_event', id),
             deleteTVShowEvent: (id) => deleteEvent('/tv_show_event', id),
         }}>
