@@ -27,7 +27,7 @@ def no_watch_event_found_response(event_type):
     return make_response(jsonify({"error" : f"No {event_type} watch event found."}), 404)
 
 def existing_watch_event_not_matching_session_id_response(event_type):
-    return make_response(jsonify({"error" ; f"existing {event_type} watch event user id does not match session id."}), 404)
+    return make_response(jsonify({"error" : f"existing {event_type} watch event user id does not match session id."}), 404)
 
 def existing_watch_event_not_matching_content_id_response(event_type):
      return make_response(jsonify({"error" : f"{event_type} id does not match existing {event_type} watch event."}), 404)
