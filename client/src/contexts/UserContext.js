@@ -3,21 +3,12 @@ import React, { createContext, useState, useEffect } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // user state
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // isAuthenticated state
-    const [userMovieWatchEvents, setUserMovieWatchEvents] = useState([])
-    const [userTVShowWatchEvents, setUserTVShowWatchEvents] = useState([])
-    const [userMovies, setUserMovies] = useState([])
-    const [userTVShows, setUserTVShows] = useState([])
-    console.log(user)
-    console.log(userMovies)
-    console.log(userTVShows)
+    const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        // check user session
         const checkSession = async () => {
             try {
-                console.log("Hi from refresh page.")
                 const response = await fetch('/check_session');
                 if (response.ok) {
                     const data = await response.json();
@@ -35,22 +26,26 @@ export const UserProvider = ({ children }) => {
         checkSession();
     }, []);
 
-    // Update userMovies,userTVShows when user changes
-    useEffect(() => {
-        if (user) {
-            setUserMovieWatchEvents(user.movie_watch_events || [])
-            setUserTVShowWatchEvents(user.tv_show_watch_events || [])
-            setUserMovies(user.movies || []);
-            setUserTVShows(user.tv_shows || []);
-        } else {
-            setUserMovieWatchEvents([]);
-            setUserTVShowWatchEvents([]);
-            setUserMovies([]);
-            setUserTVShows([]);
-        }
-    }, [user]);
+    const signup = async (username, password) => {
+        try {
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
 
-    // login function
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data.user);
+                setIsAuthenticated(true);
+            } else {
+                throw new Error('Signup failed');
+            }
+        } catch (error) {
+            console.error("Signup failed", error);
+        }
+    };
+
     const login = async (username, password) => {
         try {
             const response = await fetch('/login', {
@@ -71,12 +66,9 @@ export const UserProvider = ({ children }) => {
         }
     };
 
-    // logout function
     const logout = async () => {
         try {
-            const response = await fetch('/logout', {
-                method: 'DELETE',
-            });
+            const response = await fetch('/logout', { method: 'DELETE' });
 
             if (response.ok) {
                 setUser(null);
@@ -90,20 +82,7 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ 
-            user, 
-            isAuthenticated, 
-            login, 
-            logout,
-            userMovies,
-            userTVShows,
-            setUserMovies,
-            setUserTVShows,
-            userMovieWatchEvents,
-            userTVShowWatchEvents,
-            setUserMovieWatchEvents,
-            setUserTVShowWatchEvents,
-        }}>
+        <UserContext.Provider value={{ user, isAuthenticated, signup, login, logout }}>
             {children}
         </UserContext.Provider>
     );
