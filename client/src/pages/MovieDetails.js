@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { convertMinutesToHoursAndMinutes } from "../helpers";
 import ContentDetails from "../components/ContentDetails";
 import { ContentContext } from "../contexts/ContentContext";
@@ -14,7 +14,9 @@ function MovieDetails() {
     const { currentContent, checkTypeAndSetContent } = useContext(ContentContext) 
 
     // url routing and parameteres
-    const { movie_id } = useParams(); // tv_show_id url parameter
+    const { movie_id } = useParams(); // movie_id url parameter
+    const history = useHistory();
+    const handleCreateWatchEventClick = () => history.push(`/tv_shows/${tv_show_id}/events/new`)
 
     // empty watch event list messsage
     const emptyWatchEventListMessage = "No watch events found for this list."
@@ -50,6 +52,7 @@ function MovieDetails() {
                             jsx={<p>Duration: {convertMinutesToHoursAndMinutes(currentContent.duration)}</p>}
                         />
                     </div>
+                    <button onClick={handleCreateWatchEventClick} >Create Watch Event</button>
                     {/* Displays watched events */}
                     <div>
                         <h2>Watched Events</h2>
