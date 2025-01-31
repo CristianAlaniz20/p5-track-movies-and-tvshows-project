@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { WatchEventsContext } from "../context/WatchEventsContext";
+import { WatchEventsContext } from "../contexts/WatchEventsContext";
 
 const useContentStatus = () => {
     const { watchEvents } = useContext(WatchEventsContext);
