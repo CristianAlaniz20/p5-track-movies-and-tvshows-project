@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { ContentContext } from "../contexts/ContentContext";
 
-function ListTVShows({ tvShowList, emptyContentListMessage }) {
+function ListTVShows({ tvShowList }) {
     const { checkTypeAndSetContent } = useContext(ContentContext) // set current tv show function from ContentContext
 
     const history = useHistory() // for navigation purposes
@@ -25,7 +25,7 @@ function ListTVShows({ tvShowList, emptyContentListMessage }) {
                         onClick={() => handleTVShowContentClick(show)} 
                     />
                 )
-            }) : <p>{emptyContentListMessage}</p>}
+            }) : <p>No content found for this list. Go to Search Database tab to add content.</p>}
         </div>
     )
 }
