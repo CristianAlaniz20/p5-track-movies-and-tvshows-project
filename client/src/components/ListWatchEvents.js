@@ -7,7 +7,7 @@ function ListWatchEvents({ eventsList=[] }) {
     // On click re route to CreateMovieWatchEvent component and pass event as state
     const handleEditButtonClick = (event) => {
         history.push({
-            pathname: event.movie ? `/movies/${event.movie}/events/new` : `tv_shows/${event.tv_show}/events/new`,
+            pathname: event.movie ? `/movies/${event.movie}/events/${event.id}/edit` : `/tv_shows/${event.tv_show}/events/${event.id}/edit`,
             state: { event }, // Pass the event as state
         });
     };
