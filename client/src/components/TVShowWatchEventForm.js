@@ -27,7 +27,7 @@ function TVShowWatchEventForm() {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // conditionally render a callback function
-            event ? updateTVShowEvent(event.tv_show, values) : addTVShowEvent(tv_show_id, values.rating, values.notes, values.status)
+            event ? updateTVShowEvent(tv_show_id, values, event.id) : addTVShowEvent(tv_show_id, values.rating, values.notes, values.status)
         }
     })
 
