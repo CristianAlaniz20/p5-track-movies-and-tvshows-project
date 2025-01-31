@@ -9,7 +9,7 @@ function ListMovies({ movieList, emptyContentListMessage }) {
 
     // handle movie poster being clicked
     const handleMovieContentClick = (movie) => {
-        checkTypeAndSetContent(show)
+        checkTypeAndSetContent(movie)
         history.push(`/movies/${movie.id}`)
     }
 
