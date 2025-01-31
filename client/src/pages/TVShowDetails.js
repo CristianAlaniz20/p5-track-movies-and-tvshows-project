@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import ContentDetails from "../components/ContentDetails";
 import { ContentContext } from "../contexts/ContentContext";
 import { WatchEventsContext } from "../contexts/WatchEventsContext";
@@ -14,6 +14,8 @@ function TVShowDetails() {
 
     // url routing and parameteres
     const { tv_show_id } = useParams(); // tv_show_id url parameter
+    const history = useHistory();
+    const handleCreateWatchEventClick = () => history.push(`/tv_shows/${movie_id}/events/new`)
 
     // empty watch event list messsage
     const emptyWatchEventListMessage = "No watch events found for this list."
@@ -51,6 +53,7 @@ function TVShowDetails() {
                             jsx={<p>Seasons: {currentContent.seasons}</p>}
                         />
                     </div>
+                    <button onClick={handleCreateWatchEventClick} >Create Watch Event</button>
                     {/* Displays watched events */}
                     <div>
                         <h2>Watched Events</h2>
