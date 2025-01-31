@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import DisplayErrors from "./DisplayErrors";
 import { WatchEventsContext } from "../contexts/WatchEventsContext";
 
@@ -9,6 +9,7 @@ function MovieWatchEventForm() {
     const { addMovieEvent, updateMovieEvent } = useContext(WatchEventsContext) // add and update watch events functions
     const location = useLocation(); 
     const event = location.state?.event || null; // Get event from navigation state
+    const { movie_id } = useParams()
     
     // form schema validation
     const formSchema = yup.object().shape({
@@ -26,7 +27,7 @@ function MovieWatchEventForm() {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // conditionally render a callback function
-            event ? updateMovieEvent(event.movie, values) : addMovieEvent(event.movie, values)
+            event ? updateMovieEvent(event.movie, values) : addMovieEvent(movie_id, values.rating, values.notes, values.status)
         }
     })
 
