@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { ContentStatusContext } from "../contexts/ContentStatusContext";
+import React from "react";
 import ListMovies from "../components/ListMovies";
 import ListTVShows from "../components/ListTVShows";
+import useContentStatus from "../contexts/useContentStatus";
 
 function UserDashboard() {
     // watched and watchlist lists for movies and tv shows from ContentStatusContext
-    const { watchedMovies, watchlistMovies, watchedTVShows, watchlistTVShows } = useContext(ContentStatusContext)
+    const { watchedMovies, watchlistMovies, watchedTVShows, watchlistTVShows } = useContentStatus()
     
     return (
         <div>
