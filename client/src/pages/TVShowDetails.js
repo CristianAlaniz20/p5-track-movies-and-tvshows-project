@@ -5,53 +5,50 @@ import { ContentContext } from "../contexts/ContentContext";
 import { WatchEventsContext } from "../contexts/WatchEventsContext";
 import ListWatchEvents from "../components/ListWatchEvents";
 import { UserContext } from "../contexts/UserContext";
-
+//import { useWatchEventContext } from "../contexts/DummyWatchedContext";
 function TVShowDetails() {
-    const { tv_show_id } = useParams(); // tv_show_id url parameter
-    const { currentTVShow, setCurrentTVShow } = useContext(ContentContext) // currentMovie state from ContentContext)
-    const { user } = useContext(UserContext); // user state from UserContext
-    // states and method from WatchEventsContext 
-    const { watchedEvents, watchlistEvents, retrieveTVShowsEvents } = useContext(WatchEventsContext)
+    // Contexts
+    const { user } = useContext(UserContext)
+    const { watchedEvents, watchlistEvents } = useContext(WatchEventsContext) 
+    const { currentContent, checkTypeAndSetContent } = useContext(ContentContext) 
 
-     useEffect(() => {
-            // handle page refresh
-            const tvShowId = parseInt(tv_show_id);
-    
-            if (!currentTVShow || currentTVShow.id !== tvShowId) {
-                // Check if tv show exists in UserContext
-                const foundTVShow = user?.tv_shows?.find((show) => show.id === tvShowId);
-                if (foundTVShow) {
-                    setCurrentTVShow(foundTVShow);
-                } else {
-                    // Fetch tv show from backend if not in UserContext
-                    fetch(`/tv_shows/${tvShowId}`)
-                        .then((res) => res.json())
-                        .then((data) => setCurrentTVShow(data.tv_show))
-                        .catch((error) => console.error("Error fetching tv show:", error));
-                }
-            }
-        }, [tv_show_id, user, currentTVShow, setCurrentTVShow]);
+    // url routing and parameteres
+    const { tv_show_id } = useParams(); // tv_show_id url parameter
 
     // empty watch event list messsage
     const emptyWatchEventListMessage = "No watch events found for this list."
 
+    //const {wacthEventState, dispatchWactEvent} = useWatchEventContext();
+    //console.log("All Satate", wacthEventState);
     useEffect(() => {
-        // retrieve tv show events until currentTVShow has a value
-        if (currentTVShow) {
-            retrieveTVShowsEvents(currentTVShow)
+        // handle page refresh
+        const tvShowId = parseInt(tv_show_id);
+    
+        if (!currentContent || currentContent.id !== tvShowId) {
+            // Check if tv show exists in UserContext
+            const foundTVShow = user?.tv_shows?.find((show) => show.id === tvShowId);
+            if (foundTVShow) {
+                checkTypeAndSetContent(foundTVShow);
+            } else {
+                // Fetch tv show from backend if not in UserContext
+                fetch(`/tv_shows/${tvShowId}`)
+                    .then((res) => res.json())
+                    .then((data) => checkTypeAndSetContent(data.tv_show))
+                    .catch((error) => console.error("Error fetching tv show:", error));
+            }
         }
-    }, [currentTVShow])
+    }, [tv_show_id, user, currentContent, checkTypeAndSetContent]);
 
     return (
         <div>
             {/* conditionally render tvshow details */}
-            {currentTVShow && watchedEvents && watchlistEvents ? (
+            {currentContent && watchedEvents && watchlistEvents ? (
                 <>
                     {/* Displays content details */}
                     <div>
                         <ContentDetails 
-                            contentObj={currentTVShow}
-                            jsx={<p>Seasons: {currentTVShow.seasons}</p>}
+                            contentObj={currentContent}
+                            jsx={<p>Seasons: {currentContent.seasons}</p>}
                         />
                     </div>
                     {/* Displays watched events */}
