@@ -37,6 +37,8 @@ function App() {
             <Route exact path="/tv_shows/:tv_show_id" component={TVShowPage} />
             <Route exact path="/movies/:movie_id/events/new" component={MovieWatchEventForm} />
             <Route exact path="/tv_shows/:tv_show_id/events/new" component={TVShowWatchEventForm} />
+            <Route exact path="/movies/:movie_id/events/:event_id/edit" component={MovieWatchEventForm} />
+            <Route exact path="/tv_shows/:tv_show_id/events/:event_id/edit" component={TVShowWatchEventForm} />
           </Switch>
         </div>
     </Router>
