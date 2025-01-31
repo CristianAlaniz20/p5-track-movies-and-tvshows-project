@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-function ListWatchEvents({ eventsList=[], emptyWatchEventListMessage }) {
+function ListWatchEvents({ eventsList=[] }) {
     const history = useHistory()
 
     // On click re route to CreateMovieWatchEvent component and pass event as state
@@ -24,7 +24,7 @@ function ListWatchEvents({ eventsList=[], emptyWatchEventListMessage }) {
                         <button onClick={() => handleEditButtonClick(event)} >Edit</button>
                     </div>
                 )
-            }) : <p>{emptyWatchEventListMessage}</p>}
+            }) : <p>No watch events found for this list.</p>}
         </div>
     )
 }
