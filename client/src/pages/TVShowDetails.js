@@ -15,10 +15,7 @@ function TVShowDetails() {
     // url routing and parameteres
     const { tv_show_id } = useParams(); // tv_show_id url parameter
     const history = useHistory();
-    const handleCreateWatchEventClick = () => history.push(`/tv_shows/${movie_id}/events/new`)
-
-    // empty watch event list messsage
-    const emptyWatchEventListMessage = "No watch events found for this list."
+    const handleCreateWatchEventClick = () => history.push(`/tv_shows/${tv_show_id}/events/new`)
 
     //const {wacthEventState, dispatchWactEvent} = useWatchEventContext();
     //console.log("All Satate", wacthEventState);
@@ -57,12 +54,12 @@ function TVShowDetails() {
                     {/* Displays watched events */}
                     <div>
                         <h2>Watched Events</h2>
-                        <ListWatchEvents eventsList={watchedEvents} emptyWatchEventListMessage={emptyWatchEventListMessage} />
+                        <ListWatchEvents eventsList={watchedEvents} />
                     </div>
                     {/* Displays watched events */}
                     <div>
                         <h2>Watchlist Events</h2>
-                        <ListWatchEvents eventsList={watchlistEvents} emptyWatchEventListMessage={emptyWatchEventListMessage} />
+                        <ListWatchEvents eventsList={watchlistEvents} />
                     </div>
                 </>
             ) : (
