@@ -5,11 +5,17 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null); // user state
     const [isAuthenticated, setIsAuthenticated] = useState(false); // isAuthenticated state
+    const [userMovies, setUserMovies] = useState([])
+    const [userTVShows, setUserTVShows] = useState([])
+    console.log(user)
+    console.log(userMovies)
+    console.log(userTVShows)
 
     useEffect(() => {
         // check user session
         const checkSession = async () => {
             try {
+                console.log("Hi from refresh page.")
                 const response = await fetch('/check_session');
                 if (response.ok) {
                     const data = await response.json();
@@ -26,6 +32,17 @@ export const UserProvider = ({ children }) => {
 
         checkSession();
     }, []);
+
+    // Update userMovies and userTVShows when user changes
+    useEffect(() => {
+        if (user) {
+            setUserMovies(user.movies || []);
+            setUserTVShows(user.tv_shows || []);
+        } else {
+            setUserMovies([]);
+            setUserTVShows([]);
+        }
+    }, [user]);
 
     // login function
     const login = async (username, password) => {
@@ -67,7 +84,16 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, isAuthenticated, login, logout }}>
+        <UserContext.Provider value={{ 
+            user, 
+            isAuthenticated, 
+            login, 
+            logout,
+            userMovies,
+            userTVShows,
+            setUserMovies,
+            setUserTVShows,
+        }}>
             {children}
         </UserContext.Provider>
     );
