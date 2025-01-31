@@ -132,15 +132,25 @@ export const WatchEventsProvider = ({ children }) => {
         }
     };
 
-    const deleteEvent = async (url, id) => {
+    const deleteEvent = async (event) => {
         try {
-            // delete a watchEvent (for movie and tv show Events)
-            const response = await fetch(`${url}/${id}`, {
-                method: 'DELETE',
-            });
-
+            const url = event.movie 
+                ? `/movies/${event.movie}/events/${event.id}` 
+                : `/tv_shows/${event.tv_show}/events/${event.id}`;
+    
+            const response = await fetch(url, { method: 'DELETE' });
+    
             if (response.ok) {
-                setWatchEvents(watchEvents.filter(event => event.id !== id));
+                // Remove the event from watchEvents state
+                setWatchEvents(prevEvents => prevEvents.filter(e => e.id !== event.id));
+    
+                if (event.movie) {
+                    // Remove from userMovieWatchEvents state
+                    setUserMovieWatchEvents(prevEvents => prevEvents.filter(e => e.id !== event.id));
+                } else {
+                    // Remove from userTVShowWatchEvents state
+                    setUserTVShowWatchEvents(prevEvents => prevEvents.filter(e => e.id !== event.id));
+                }
             }
         } catch (error) {
             console.error("Failed to delete event", error);
@@ -157,8 +167,7 @@ export const WatchEventsProvider = ({ children }) => {
             addTVShowEvent,
             updateMovieEvent,
             updateTVShowEvent,
-            deleteMovieEvent: (id) => deleteEvent('/movie_event', id),
-            deleteTVShowEvent: (id) => deleteEvent('/tv_show_event', id),
+            deleteEvent,
         }}>
             {children}
         </WatchEventsContext.Provider>
