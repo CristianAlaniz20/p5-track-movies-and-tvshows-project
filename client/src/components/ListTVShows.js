@@ -3,13 +3,13 @@ import { useHistory } from "react-router-dom";
 import { ContentContext } from "../contexts/ContentContext";
 
 function ListTVShows({ tvShowList, emptyContentListMessage }) {
-    const { setCurrentTVShow } = useContext(ContentContext) // set current tv show function from ContentContext
+    const { checkTypeAndSetContent } = useContext(ContentContext) // set current tv show function from ContentContext
 
     const history = useHistory() // for navigation purposes
 
     // handle tv show poster being clicked
     const handleTVShowContentClick = (show) => {
-        setCurrentTVShow(show)
+        checkTypeAndSetContent(show)
         history.push(`/tv_shows/${show.id}`)
     }
 
