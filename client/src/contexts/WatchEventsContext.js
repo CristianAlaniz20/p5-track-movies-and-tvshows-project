@@ -1,19 +1,20 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const WatchEventsContext = createContext();
 
 export const WatchEventsProvider = ({ children }) => {
+    const [watchEvents, setWatchEvents] = useState([]); // watch events state
     const [watchedEvents, setWatchedEvents] = useState([]) // watched events state
     const [watchlistEvents, setWatchlistEvents] = useState([]) // watchlist events state
-    const [watchEvents, setWatchEvents] = useState([]); // watch events state
 
-    const retrieveMovieEvents = (movie) => {
-        if (Array.isArray(movie.movie_watch_events)) {
+    // seperates watchEvents into watchedEvents and watchlistEvents
+    useEffect(() => {
+        if (watchEvents) {
             // reset watchEvents and watchlistEvents
             setWatchedEvents([])
             setWatchlistEvents([])
 
-            movie.movie_watch_events.forEach(event => {
+            watchEvents.forEach(event => {
                 // add events with a status of 'watched' to watchedEvents
                 if (event.status === "watched") {
                     setWatchedEvents(prevEvents => [...prevEvents, event])
@@ -25,55 +26,13 @@ export const WatchEventsProvider = ({ children }) => {
                     console.warn("event status is invalid", event)
                 }
             });
-        } else {
-            console.warn("movie_watch_events is not an array or is undefined", movie);
         }
-    }
-
-    const retrieveTVShowsEvents = (show) => {
-        if (Array.isArray(show.tv_show_watch_events)) {
-            // reset watchEvents and watchlistEvents
-            setWatchEvents([])
-            setWatchEvents([])
-
-            show.tv_show_watch_events.forEach(event => {
-                // add events with a status of 'watched' to watchedEvents
-                if (event.status === "watched") {
-                    setWatchedEvents(prevEvents => [...prevEvents, event])
-                // add events with a status of 'watchlist' to watchlistEvents
-                }  else if (event.status === "watchlist") {
-                    setWatchlistEvents(prevEvents => [...prevEvents, event])
-                // handle any exceptions
-                } else {
-                    console.warn("event status is invalid", event)
-                }
-            });
-        } else {
-            console.warn("tv_show_watch_events is not an array or is undefined", show);
-        }
-    }
-
-    /*const fetchWatchEvents = async () => {
-        if (isAuthenticated && user) {
-            try {
-                // retrieve and add movieEvents and tvShowEvents to watchEvents state
-                const movieResponse = await fetch(`/movie_event/user/${user.id}`);
-                const tvShowResponse = await fetch(`/tv_show_event/user/${user.id}`);
-                if (movieResponse.ok && tvShowResponse.ok) {
-                    const movieEvents = await movieResponse.json();
-                    const tvShowEvents = await tvShowResponse.json();
-                    setWatchEvents([...movieEvents, ...tvShowEvents]);
-                }
-            } catch (error) {
-                console.error("Failed to fetch watch events", error);
-            }
-        }
-    };*/
+    }, [watchEvents])
 
     const addMovieEvent = async (movieId, rating, notes, status) => {
         try {
             // create and add a movieEvent to the watchEvents state
-            const response = await fetch(`/movie_event/${movieId}`, {
+            const response = await fetch(`/movies/${movieId}/events`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ rating, notes, status }),
@@ -91,7 +50,7 @@ export const WatchEventsProvider = ({ children }) => {
     const addTVShowEvent = async (tvShowId, rating, notes, status) => {
         try {
             // create and add a tvShowEvent to the watchEvents state
-            const response = await fetch(`/tv_show_event/${tvShowId}`, {
+            const response = await fetch(`/tv_shows/${tvShowId}/events`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ rating, notes, status }),
@@ -145,10 +104,8 @@ export const WatchEventsProvider = ({ children }) => {
         <WatchEventsContext.Provider value={{
             watchedEvents,
             watchlistEvents,
-            retrieveMovieEvents,
-            retrieveTVShowsEvents,
-            //watchEvents,
-            //fetchWatchEvents,
+            watchEvents,
+            setWatchEvents,
             addMovieEvent,
             addTVShowEvent,
             updateMovieEvent: (id, data) => updateEvent('/movie_event', id, data),
