@@ -408,7 +408,13 @@ class TVShowEvent(Resource):
                 db.session.commit()
 
                 # Create response
-                return make_response(jsonify({"message" : "tv show watch event deleted."}), 200)
+                response = {
+                    "message" : "tv show watch event deleted.",
+                    "watch_event" : tv_show_watch_event_schema.dump(existing_tv_show_watch_event)
+                }
+
+                # Create response
+                return make_response(jsonify(response), 200)
 
         # All other exceptions
         except Exception as e:
