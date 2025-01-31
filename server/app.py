@@ -534,8 +534,11 @@ api.add_resource(MovieResource, '/movies', endpoint='movies')
 api.add_resource(MovieResource, '/movies/<int:movie_id>', endpoint='movie')
 api.add_resource(TVShowResource, '/tv_shows', endpoint='tv_shows')
 api.add_resource(TVShowResource, '/tv_shows/<int:tv_show_id>', endpoint='tv_show')
-api.add_resource(MovieEvent, '/movies/<int:movie_id>/events', endpoint='movie_events')
-api.add_resource(TVShowEvent, '/tv_shows/<int:tv_show_id>/events', endpoint='tv_show_events')
+api.add_resource(MovieEvent, '/movies/<int:movie_id>/events', endpoint='movie/events')
+api.add_resource(TVShowEvent, '/tv_shows/<int:tv_show_id>/events', endpoint='tv_show/events')
+api.add_resource(MovieEvent, '/movies/<int:movie_id>/events/<int:event_id>', endpoint='movie/events')
+api.add_resource(TVShowEvent, '/tv_shows/<int:tv_show_id>/events/<int:event_id>', endpoint='tv_show/events')
+
 
 
 if __name__ == '__main__':
