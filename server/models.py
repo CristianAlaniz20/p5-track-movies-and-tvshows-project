@@ -26,6 +26,16 @@ class User(db.Model):
 
     tv_shows = association_proxy('tv_show_watch_events', 'tv_show', creator=lambda tv_show_obj: TVShowWatchEvent(tv_show=tv_show_obj))
 
+    @property
+    def unique_movie_ids(self):
+        # Returns a list of unique movie IDs from the user's movie watch events.
+        return list({event.movie_id for event in self.movie_watch_events})
+
+    @property
+    def unique_tv_show_ids(self):
+        # Returns a list of unique TV show IDs from the user's TV show watch events.
+        return list({event.tv_show_id for event in self.tv_show_watch_events})
+
     # For debugging purposes
     def __repr__(self):
       return f'User: ID {self.id}, Username {self.username}'
