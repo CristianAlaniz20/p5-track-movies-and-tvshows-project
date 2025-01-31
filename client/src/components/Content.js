@@ -4,16 +4,16 @@ import { ContentContext } from "../contexts/ContentContext";
 
 function Content({ result }) {
     const history = useHistory()
-    const { setCurrentMovie, setCurrentTVShow } = useContext(ContentContext)
+    const { checkTypeAndSetContent } = useContext(ContentContext)
 
     // reroute to MovieDetails component
     const handleMovieImageClick = (result) => {
-        setCurrentMovie(result)
+        checkTypeAndSetContent(result)
         history.push(`/movies/${result.id}`)
     }
     // reroute to TVShowDetails component
     const handleTVShowImageClick = (result) => {
-        setCurrentTVShow(result)
+        checkTypeAndSetContent(result)
         history.push(`/tv_shows/${result.id}`)
     }
 
