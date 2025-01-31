@@ -3,13 +3,13 @@ import { useHistory } from "react-router-dom";
 import { ContentContext } from "../contexts/ContentContext";
 
 function ListMovies({ movieList, emptyContentListMessage }) {
-    const { setCurrentMovie } = useContext(ContentContext) // set current movie function from ContentContext
+    const { checkTypeAndSetContent } = useContext(ContentContext) // set current movie function from ContentContext
 
     const history = useHistory() // for navigation purposes
 
     // handle movie poster being clicked
     const handleMovieContentClick = (movie) => {
-        setCurrentMovie(movie)
+        checkTypeAndSetContent(show)
         history.push(`/movies/${movie.id}`)
     }
 
