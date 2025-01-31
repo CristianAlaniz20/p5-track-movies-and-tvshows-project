@@ -8,6 +8,7 @@ export const WatchEventsProvider = ({ children }) => {
     const [watchedEvents, setWatchedEvents] = useState([]) // watched events state
     const [watchlistEvents, setWatchlistEvents] = useState([]) // watchlist events state
     const { setUserMovieWatchEvents, setUserTVShowWatchEvents } = useContext(UserContext)
+    console.log(watchEvents)
 
     // seperates watchEvents into watchedEvents and watchlistEvents
     useEffect(() => {
@@ -84,14 +85,14 @@ export const WatchEventsProvider = ({ children }) => {
                 // Update userMovieWatchEvents state
                 setUserMovieWatchEvents(prevEvents =>
                     prevEvents.map(event => 
-                        event.id === updatedEvent.id ? updatedEvent : event
+                        event.id === updatedEvent.watch_event.id ? updatedEvent.watch_event : event
                     )
                 );
 
                 // Update watchEvents state
                 setWatchEvents(prevEvents =>
                     prevEvents.map(event =>
-                        event.id === updatedEvent.id ? updatedEvent : event
+                        event.id === updatedEvent.watch_event.id ? updatedEvent.watch_event : event
                     )
                 );
             }
@@ -115,14 +116,14 @@ export const WatchEventsProvider = ({ children }) => {
                 // Update userTVShowWatchEvents state
                 setUserTVShowWatchEvents(prevEvents =>
                     prevEvents.map(event => 
-                        event.id === updatedEvent.id ? updatedEvent : event
+                        event.id === updatedEvent.watch_event.id ? updatedEvent.watch_event : event
                     )
                 );
 
                 // Update watchEvents state
                 setWatchEvents(prevEvents =>
                     prevEvents.map(event =>
-                        event.id === updatedEvent.id ? updatedEvent : event
+                        event.id === updatedEvent.watch_event.id ? updatedEvent.watch_event : event
                     )
                 );
             }
