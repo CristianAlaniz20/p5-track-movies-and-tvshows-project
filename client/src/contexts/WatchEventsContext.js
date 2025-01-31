@@ -79,6 +79,7 @@ export const WatchEventsProvider = ({ children }) => {
     return (
         <WatchEventsContext.Provider value={{
             watchEvents,
+            setWatchEvents,
             addWatchEvent,
             updateWatchEvent,
             deleteWatchEvent
