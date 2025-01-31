@@ -16,10 +16,7 @@ function MovieDetails() {
     // url routing and parameteres
     const { movie_id } = useParams(); // movie_id url parameter
     const history = useHistory();
-    const handleCreateWatchEventClick = () => history.push(`/tv_shows/${tv_show_id}/events/new`)
-
-    // empty watch event list messsage
-    const emptyWatchEventListMessage = "No watch events found for this list."
+    const handleCreateWatchEventClick = () => history.push(`/tv_shows/${movie_id}/events/new`)
 
     useEffect(() => {
         // handle page refresh
@@ -56,12 +53,12 @@ function MovieDetails() {
                     {/* Displays watched events */}
                     <div>
                         <h2>Watched Events</h2>
-                        <ListWatchEvents eventsList={watchedEvents} emptyWatchEventListMessage={emptyWatchEventListMessage} />
+                        <ListWatchEvents eventsList={watchedEvents} />
                     </div>
                     {/* Displays watched events */}
                     <div>
                         <h2>Watchlist Events</h2>
-                        <ListWatchEvents eventsList={watchlistEvents} emptyWatchEventListMessage={emptyWatchEventListMessage} />
+                        <ListWatchEvents eventsList={watchlistEvents} />
                     </div>
                 </>
             ) : (
