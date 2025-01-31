@@ -8,38 +8,53 @@ export const ContentStatusProvider = ({ children }) => {
     const [watchlistMovies, setWatchlistMovies] = useState([]) // watchlist movies state
     const [watchedTVShows, setWatchedTVShows] = useState([]) // watched tv shows state
     const [watchlistTVShows, setWatchlistTVShows] = useState([]) // watchlist tv shows state
-    const { user } = useContext(UserContext) // user state from UserContext
+    const { userMovies, userTVShows } = useContext(UserContext) // user state from UserContext
 
+    // Effect for Movies
     useEffect(() => {
-        if (user) {
-          // Perform the operations only when user data is available
-            user.movies.forEach(movie => {
-                // get most recent event via event.created_at attribute
-                const mostRecentEvent = movie.movie_watch_events.reduce((latest, current) => {
-                return new Date(latest.created_at) > new Date(current.created_at) ? latest : current;
-                });
-        
-                if (mostRecentEvent.status === 'watched') {
-                setWatchedMovies(prevMovies => [...prevMovies, movie]);
-                } else {
-                setWatchlistMovies(prevMovies => [...prevMovies, movie]);
-                }
-            });
+        if (!userMovies) return;
+
+        const newWatchedMovies = [];
+        const newWatchlistMovies = [];
+
+        userMovies.forEach(movie => {
+            const mostRecentEvent = movie.movie_watch_events.reduce((latest, current) => 
+                new Date(latest.created_at) > new Date(current.created_at) ? latest : current
+            );
+
+            if (mostRecentEvent.status === "watched") {
+                newWatchedMovies.push(movie);
+            } else {
+                newWatchlistMovies.push(movie);
+            }
+        });
+
+        setWatchedMovies(newWatchedMovies);
+        setWatchlistMovies(newWatchlistMovies);
+    }, [userMovies]); 
     
-            user.tv_shows.forEach(show => {
-                // get most recent event via event.created_at attribute
-                const mostRecentEvent = show.tv_show_watch_events.reduce((latest, current) => {
-                return new Date(latest.created_at) > new Date(current.created_at) ? latest : current;
-                });
-        
-                if (mostRecentEvent.status === 'watched') {
-                setWatchedTVShows(prevShows => [...prevShows, show]);
-                } else {
-                setWatchlistTVShows(prevShows => [...prevShows, show]);
-                }
-            });
-        }
-    }, [user]);
+    // Effect for TV Shows
+    useEffect(() => {
+        if (!userTVShows) return;
+
+        const newWatchedTVShows = [];
+        const newWatchlistTVShows = [];
+
+        userTVShows.forEach(show => {
+            const mostRecentEvent = show.tv_show_watch_events.reduce((latest, current) => 
+                new Date(latest.created_at) > new Date(current.created_at) ? latest : current
+            );
+
+            if (mostRecentEvent.status === "watched") {
+                newWatchedTVShows.push(show);
+            } else {
+                newWatchlistTVShows.push(show);
+            }
+        });
+
+        setWatchedTVShows(newWatchedTVShows);
+        setWatchlistTVShows(newWatchlistTVShows);
+    }, [userTVShows]); 
 
     return (
         <ContentStatusContext.Provider value={{
