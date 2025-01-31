@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { UserContext } from './UserContext';
 
 export const WatchEventsContext = createContext();
 
@@ -6,6 +7,7 @@ export const WatchEventsProvider = ({ children }) => {
     const [watchEvents, setWatchEvents] = useState([]); // watch events state
     const [watchedEvents, setWatchedEvents] = useState([]) // watched events state
     const [watchlistEvents, setWatchlistEvents] = useState([]) // watchlist events state
+    const { setUserMovieWatchEvents, setUserTVShowWatchEvents } = useContext(UserContext)
 
     // seperates watchEvents into watchedEvents and watchlistEvents
     useEffect(() => {
@@ -40,6 +42,7 @@ export const WatchEventsProvider = ({ children }) => {
 
             if (response.ok) {
                 const data = await response.json();
+                setUserMovieWatchEvents((prevUserMovieWatchEvents) => [...prevUserMovieWatchEvents, data.watch_event])
                 setWatchEvents([...watchEvents, data.watch_event]);
             }
         } catch (error) {
@@ -58,6 +61,7 @@ export const WatchEventsProvider = ({ children }) => {
 
             if (response.ok) {
                 const data = await response.json();
+                setUserTVShowWatchEvents((prevUserTVShowWatchEvents) => [...prevUserTVShowWatchEvents, data.watch_event])
                 setWatchEvents([...watchEvents, data.watch_event]);
             }
         } catch (error) {
