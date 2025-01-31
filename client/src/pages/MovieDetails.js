@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { convertMinutesToHoursAndMinutes } from "../helpers";
 import ContentDetails from "../components/ContentDetails";
 import { ContentContext } from "../contexts/ContentContext";
 import { WatchEventsContext } from "../contexts/WatchEventsContext";
@@ -44,10 +43,7 @@ function MovieDetails() {
                 <>
                     {/* Displays content details */}
                     <div>
-                        <ContentDetails 
-                            contentObj={currentContent}
-                            jsx={<p>Duration: {convertMinutesToHoursAndMinutes(currentContent.duration)}</p>}
-                        />
+                        <ContentDetails />
                     </div>
                     <button onClick={handleCreateWatchEventClick} >Create Watch Event</button>
                     {/* Displays watched events */}
