@@ -27,7 +27,7 @@ function MovieWatchEventForm() {
         validationSchema: formSchema,
         onSubmit: (values) => {
             // conditionally render a callback function
-            event ? updateMovieEvent(event.movie, values) : addMovieEvent(movie_id, values.rating, values.notes, values.status)
+            event ? updateMovieEvent(movie_id, values, event.id) : addMovieEvent(movie_id, values.rating, values.notes, values.status)
         }
     })
 
